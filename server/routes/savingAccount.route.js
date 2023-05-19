@@ -1,65 +1,46 @@
-import {Router} from "express";
-import customers from "../models/customers.model.js";
-import savingaccounts from "../models/savingAccounts.model.js";
-import { typesavings } from "../models/savingAccounts.model.js";
+import { Router } from "express";
+import jwt  from "jsonwebtoken";
+import * as dotenv from "dotenv"
+import { userVerify } from "../middleware/auth.middleware.js";
+import { createAccount } from "../middleware/savingAccount.middleware.js";
+import { LOAITIETKIEM } from "../models/SOTIETKIEM.model.js";
+dotenv.config()
+const doc = [
+    {
+        TenLoaiTietKiem: "Không Kỳ Hạn",
+        KyHan: 0,
+        LaiSuat: 0.005,
+        SoNgayGuiDeDuocRut: 15,
+    },
+    {
+        TenLoaiTietKiem: "3 Tháng",
+        KyHan: 3,
+        LaiSuat: 0.05,
+        SoNgayGuiDeDuocRut: 90,
+    },
+    {
+        TenLoaiTietKiem: "6 Tháng",
+        KyHan: 6,
+        LaiSuat: 0.055,
+        SoNgayGuiDeDuocRut: 180,
+    },
+]
+const savingAccountRouter = Router()
+savingAccountRouter.post("/create", userVerify, createAccount)
 
-const savingAccount = Router()
 
-savingAccount.get("/", (req, res) => {
-    res.json({
-        message: 'savingaccount'
+
+savingAccountRouter.get("/", userVerify, (req, res) => {
+    console.log(req.body)
+    return res.json({
+        message: "saving account"
     })
 })
-savingAccount.get("/type", async(req, res) => {
+
+savingAccountRouter.get("/LTK", async(req, res) => {
     try {
-        await typesavings.create([
-            {
-                nameType: 'Không kì hạn',
-                term: null,
-                rate: 0.005,
-            },
-            {
-                nameType: '3 tháng',
-                term: 3,
-                rate: 0.05,
-            },
-            {
-                nameType: '6 Tháng',
-                term: 6,
-                rate: 0.055,
-            }
-        ])
-        res.json({
-            success: true,
-        })
     } catch (error) {
-        res.json({
-            message: error.message,
-        })
+        res.json({message: error.message})
     }
 })
-
-
-
-savingAccount.post("/", async (req, res) => {
-    const { money, nameType, CMND } = req.body
-    try {
-        const customerID = await customers.findOne({ CMND })
-        const typeSavingID = await typesavings.findOne({ nameType })
-        const data = await savingaccounts.create({
-            customerID,
-            typeSavingID,
-            money,
-        })
-        res.status(200).json({
-            data
-        })
-    } catch (error) {
-        res.json({
-            message: error.message
-        })
-    }
-})
-
-
-export default savingAccount
+export default savingAccountRouter
