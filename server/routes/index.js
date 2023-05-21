@@ -1,9 +1,6 @@
 import { Router } from "express";
-import staffRouter from "./staff.route.js";
-import adminRouter from "./admin.route.js";
-import customerRouter from "./customer.route.js";
-import savingAccountRouter from "./savingAccount.route.js";
-
+import phieuguitienRouter from "./phieuguitien.route.js";
+import khachhangRouter from "./khachhang.route.js";
 
 const router = Router()
 
@@ -12,9 +9,7 @@ router.get("/", (req, res) => {
         message: "router"
     })
 })
-router.use("/staff", staffRouter)
-router.use("/admin", adminRouter)
-router.use("/customer", customerRouter)
-router.use("/savingaccount", savingAccountRouter)
+router.use("/deposit", phieuguitienRouter)
+router.use("/customer", khachhangRouter)
 
 export default router
