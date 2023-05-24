@@ -27,16 +27,15 @@ khachhangRouter
     //Lấy tài khoản
     .get("/:id", async(req, res)=>{
         const { id } = req.params
-        console.log(id);
         try {
-            const data = await findOneCustomer(id)
+            const [data] = await findOneCustomer(id)
             console.log(data);
             res.json({
                 success: true,
                 data,
             })
         } catch (error) {
-            res.json({
+            res.status(500).json({
                 success: false,
                 message: error.message,
             })
