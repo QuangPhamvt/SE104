@@ -55,7 +55,8 @@ create table IF NOT EXISTS `NHOMNGUOIDUNG`(
 );
 -- TẠo bảng người dùng
 create table if not exists `NGUOIDUNG`(
-	`username` varchar(15) primary key,
+	`id` varchar(15) primary key,
+	`username` varchar(15) unique,
     `MaNhom` varchar(15) not null,
     `password` varchar(255) not null
     
@@ -87,12 +88,21 @@ insert into `PHIEUGUITIEN` values("887f9a6f87f2d7d", "c8b3d0f311ebbb4","34e69157
 DELETE FROM CNPM.PHIEUGUITIEN WHERE id='887f9a6f87f2d7d';
 DELETE FROM CNPM.BAOCAODOANHSO  WHERE id='320cfd6127c3598';
 
+-- NHOMNGUOIDUNG
+insert into `NHOMNGUOIDUNG` values ("9fe0445d43ea6ec","Admin");
+insert into `NHOMNGUOIDUNG` values ("aad1784a8f22950", "Staff");
+-- NGUOIDUNG	
+insert into `NGUOIDUNG` values ("ca47655321dac80", "quang", "aad1784a8f22950", "$2b$10$Bpg2fi9cLnigYlHFs8YFFe8WOBw81Ru6m7uOXwpTobpCTGpa3timq");
+insert into `NGUOIDUNG` values ("715c9170f36d1c6", "thu", "aad1784a8f22950", "$2b$10$7x2a0UxCAtggqe5OGUWs.e5svmJCLwEYAlPAihuIyKscU/3hcvF/q");
 
+DELETE  from `NGUOIDUNG`;
 
 select * from `LOAITIETKIEM`;
 select * from `KHACHHANG`;
 select * from `PHIEUGUITIEN`;
 select * from `BAOCAODOANHSO`;
+select * from `NHOMNGUOIDUNG`;
+select * from `NGUOIDUNG`;
 
 
 

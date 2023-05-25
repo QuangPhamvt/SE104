@@ -5,7 +5,14 @@ import { createDeposit, findDepositCustomerModel, updateDrawOut } from "../model
 export async function findDepositController(req, res){
     try {
         const [data] = await mysql.query(
-            `select * from PHIEUGUITIEN`
+            `select 
+                PGT.id, LTK.TenLoaiTietKiem, 
+                LTK.LaiSuat, HoTenKhachHang, 
+                CMND, DiaChi, NgayMoSo, NgayDongSo, 
+                NgayCapNhap, Tien, TienGoc 
+            from PHIEUGUITIEN PGT
+            inner join KHACHHANG KH on KH.id = PGT.MaKhachHang
+            inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK`
         )
         return res.status(200).json({
             success: true,
@@ -13,7 +20,7 @@ export async function findDepositController(req, res){
             message: 'phieu gui tien',
         })
     } catch (error) {
-        res.status.json({
+        res.status(500).json({
             success: false,
             message: error.message,
         }) 
