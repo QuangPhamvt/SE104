@@ -1,4 +1,47 @@
-import { createDeposit, findDepositCustomerModel } from "../models/phieuguitien.model.js"
+import { mysql } from "../models/index.js"
+import { createDeposit, findDepositCustomerModel, updateDrawOut } from "../models/phieuguitien.model.js"
+
+// lấy tất cả phiếu tồn tại
+export async function findDepositController(req, res){
+    try {
+        const [data] = await mysql.query(
+            `select * from PHIEUGUITIEN`
+        )
+        return res.status(200).json({
+            success: true,
+            data,
+            message: 'phieu gui tien',
+        })
+    } catch (error) {
+        res.status.json({
+            success: false,
+            message: error.message,
+        }) 
+    }
+}
+
+// tìm tất cả phiếu của một người
+export async function findDepositCustomerController(req, res){
+    const { CMND } = req.params
+    try {
+        const [data] = await findDepositCustomerModel(CMND)
+        if(!data)
+            return res.status(400).json({
+                success: false,
+                message: "Không tồn tại bất cứ phiếu nào"
+            })
+        return res.status(200).json({
+            success: true,
+            data,
+            message: 'oke oke',
+        })
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message,
+        }) 
+    }
+}
 
 // tạo phiếu
 export async function createDepositController(req, res){
@@ -20,27 +63,38 @@ export async function createDepositController(req, res){
         }) 
     }
 }
-
-// tìm tất cả phiếu của một người
-
-export async function findDepositCustomerController(req, res){
-    const { CMND } = req.params
+// cập nhập lại tiền cho 1 người
+export async function updateDepositController(req, res){
     try {
-        const [data] = await findDepositCustomerModel(CMND)
-        if(!data)
-            return res.status(400).json({
-                success: false,
-                message: "Không tồn tại bất cứ phiếu nào"
-            })
+        await mysql.query(
+            `update PHIEUGUITIEN
+            SET NgayCapNhap = ?`
+            , [new Date()])
         return res.status(200).json({
             success: true,
-            data,
-            message: 'oke oke',
+            message: 'đã cập nhạp thành công'
         })
     } catch (error) {
-        res.json({
+        return res.json({
             success: false,
             message: error.message,
-        }) 
+        })
+    }
+}
+
+// Rút tiền
+export async function deleteDepositController(req, res){
+    const { id } = req.params
+    try {
+        await updateDrawOut(id)
+        return res.json({
+            success: true,
+            message: 'oke',
+        })
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message,
+        })
     }
 }

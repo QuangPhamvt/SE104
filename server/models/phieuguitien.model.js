@@ -20,7 +20,7 @@ export async function createDeposit({CMND, TienGoc, LTK}){
 export async function updateDrawOut(data){
     return mysql.query(
         `update PHIEUGUITIEN
-        set Tien = 0 ,NgayDongSo = current_timestamp() 
+        set Tien = 0, NgayDongSo = current_timestamp() 
         where id = ?`
     , [data])
 }
