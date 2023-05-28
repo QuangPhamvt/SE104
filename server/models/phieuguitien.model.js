@@ -13,8 +13,8 @@ export async function createDeposit({ CMND, TienGoc, LTK }) {
 	)
 	if (!KH || !ltkId) return []
 	return mysql.query(
-		`insert into PHIEUGUITIEN(LTK, MaKhachHang, TienGoc, TienDu ) values (?, ?, ?, ? )`,
-		[ltkId.id, KH.id, TienGoc, TienGoc]
+		`insert into PHIEUGUITIEN(LTK, MaKhachHang, TienGoc, TienDu, NgayMoSo ) values (?, ?, ?, ?, ? )`,
+		[ltkId.id, KH.id, TienGoc, TienGoc, new Date()]
 	)
 }
 
