@@ -1,35 +1,38 @@
-import { mysql } from "./index.js";
-import { findOneCustomer } from "./khachhang.model.js";
-import { customAlphabet } from "nanoid";
-const nanoid = customAlphabet('123456789abcdef', 15)
+import { mysql } from "./index.js"
+import { findOneCustomer } from "./khachhang.model.js"
+import { customAlphabet } from "nanoid"
+const nanoid = customAlphabet("123456789abcdef", 15)
 
-export async function createDeposit({CMND, TienGoc, LTK}){
-    const [[KH]] = await findOneCustomer(CMND)
-    const [[ltkId]]= await mysql.query(
-        `select id 
+export async function createDeposit({ CMND, TienGoc, LTK }) {
+	const [[KH]] = await findOneCustomer(CMND)
+	const [[ltkId]] = await mysql.query(
+		`select id 
         from LOAITIETKIEM 
-        where TenLoaiTietKiem = ?`
-    , [LTK])
-    if (!KH || !ltkId) return []
-    return mysql.query(
-        `insert into PHIEUGUITIEN(id, Tien, TienGoc, LTK, MaKhachHang) values (?, ?, ?, ?, ?)`
-    , [nanoid(), TienGoc, TienGoc, ltkId.id, KH.id])
-    
+        where TenLoaiTietKiem = ?`,
+		[LTK]
+	)
+	if (!KH || !ltkId) return []
+	return mysql.query(
+		`insert into PHIEUGUITIEN(LTK, MaKhachHang, TienGoc, TienDu ) values (?, ?, ?, ? )`,
+		[ltkId.id, KH.id, TienGoc, TienGoc]
+	)
 }
 
-export async function updateDrawOut(data){
-    return mysql.query(
-        `update PHIEUGUITIEN
+export async function updateDrawOut(data) {
+	return mysql.query(
+		`update PHIEUGUITIEN
         set Tien = 0, NgayDongSo = current_timestamp() 
-        where id = ?`
-    , [data])
+        where id = ?`,
+		[data]
+	)
 }
 
-export async function findDepositCustomerModel(CMND){
-    return mysql.query(
-        `select * from KHACHHANG KH
+export async function findDepositCustomerModel(CMND) {
+	return mysql.query(
+		`select * from KHACHHANG KH
         inner join PHIEUGUITIEN PGT
         on KH.id = PGT.MaKhachHang
-        where KH.CMND = ?`
-    , [CMND])
+        where KH.CMND = ?`,
+		[CMND]
+	)
 }

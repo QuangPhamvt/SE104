@@ -1,90 +1,74 @@
 -- Trigger 
--- bảng phiếu gửi tiền
-CREATE TRIGGER before_PHIEUGUITIEN_update
-BEFORE UPDATE ON CNPM.PHIEUGUITIEN 
-FOR EACH ROW
-BEGIN
--- Update khi đến ngày tính lãi
-    DECLARE days int default (select timestampdiff(day, old.NgayCapNhap, current_timestamp));
-    DECLARE kyhan int default (select KyHan from LOAITIETKIEM where LOAITIETKIEM.id = new.LTK);
-    if days >= kyhan then
-		SET new.Tien = old.Tien*(1 + (select LaiSuat from LOAITIETKIEM where LOAITIETKIEM.id = new.LTK));
-	else 
-		SET new.NgayCapNhap = old.NgayCapNhap;
-	end if;
--- Update bản báo cáo doanh số khi đến ngày
-	if new.Tien = 0 then 
-		begin
-			IF NOT EXISTS(
-				SELECT * 
-				FROM BAOCAODOANHSO BCDS 
-				where 
-					DATE(BCDS.NgayBaoCao) = DATE(new.NgayDongSo) and
-					new.LTK = BCDS.LTK 
-			) then 
-			BEGIN
-				DECLARE id varchar(15) DEFAULT (SELECT SUBSTR(MD5(RAND()), 1, 15));
-				INSERT INTO `BAOCAODOANHSO`(id, LTK, TongThu, TongChi, ChenhLech) 
-					VALUES (id, new.LTK, 0, old.Tien, -1*(old.Tien));
-			END;
-			ELSE 
-				UPDATE BAOCAODOANHSO 
-				SET 
-					TongChi  = TongChi  + old.Tien,
-					ChenhLech = ChenhLech - old.Tien
-				WHERE DATE(BAOCAODOANHSO.NgayBaoCao) = DATE(new.NgayDongSo);
-			END IF;
-		end;
-	end if;
-END
-DROP trigger before_PHIEUGUITIEN_update;
-
--- update BAOCAODOANHSO nếu thêm một phieuguitien
+-- insert PHIEUGUITIEN
+use CNPM;
+DROP TRIGGER `CNPM`.`before_PHIEUGUITIEN_insert`;
+DELIMITER $$
 CREATE TRIGGER before_PHIEUGUITIEN_insert
 BEFORE INSERT ON `CNPM`.`PHIEUGUITIEN`
-FOR EACH ROW 
-BEGIN 
-	IF NOT EXISTS (
-		SELECT * 
-		FROM BAOCAODOANHSO BCDS 
-		where 
-			DATE(BCDS.NgayBaoCao) = DATE(new.NgayMoSo) and
-			new.LTK = BCDS.LTK 
-		) THEN 
-		BEGIN 
-			DECLARE id varchar(15) DEFAULT (SELECT SUBSTR(MD5(RAND()), 1, 15));
-			INSERT INTO `BAOCAODOANHSO`(id, LTK, NgayBaoCao, TongThu, TongChi, ChenhLech) 
-				VALUES (id, new.LTK, new.NgayMoSo, new.TienGoc, 0, new.TienGoc);
-		END;
+FOR EACH ROW
+BEGIN
+	DECLARE KyHan int DEFAULT (SELECT `KyHan` FROM `LOAITIETKIEM` WHERE `id` = new.`LTK`);
+	SET new.`NgayDaoHan` = date((SELECT DATE_ADD(new.`NgayMoSo`, INTERVAL KyHan DAY)));
+    SET new.`TienDu` = new.`TienGoc`;
+    IF (
+			SELECT timestampdiff(day, new.`NgayMoSo`, `NgayApDung`) 
+			FROM `LOAITIETKIEM`
+			WHERE `id` = new.`LTK` 
+		) > 0 then
+		SET new.`LaiSuat` = (SELECT `LaiSuatCu` FROM `LOAITIETKIEM` WHERE `id` = new.`LTK`);
 	ELSE
-		BEGIN
-			UPDATE BAOCAODOANHSO
-			SET 
-				TongThu  = TongThu + new.TienGoc,
-				ChenhLech = ChenhLech + new.TienGoc
-			WHERE 
-				DATE(BAOCAODOANHSO.NgayBaoCao) = DATE(new.NgayMoSo) AND 
-				new.LTK = BAOCAODOANHSO.LTK;
-		END;
+		SET new.`LaiSuat` = (SELECT `LaiSuat` FROM `LOAITIETKIEM` WHERE `id` = new.`LTK`);
 	END IF;
-END;
-DROP TRIGGER before_PHIEUGUITIEN_insert;
 
-select timestampdiff(day, (select NgayCapNhap from PHIEUGUITIEN order by NgayCapNhap limit 1), current_timestamp);
-
-
-
-
-
-
-
-
-
+    -- cập nhập lại danh sách báo cáo khi thêm
+    IF NOT EXISTS (SELECT * FROM `BAOCAODOANHSO` WHERE `NgayBaoCao` = DATE(new.`NgayMoSo`) AND `LTK` = new.`LTK`) then
+		INSERT INTO `BAOCAODOANHSO`(LTK, NGAYBAOCAO, TongThu, TongChi, ChenhLech) VALUES (new.`LTK`, new.`NgayMoSo`, new.`TienGoc`, 0, new.`TienGoc`);
+	ELSE
+		UPDATE `BAOCAODOANHSO` 
+        SET `TongThu` = `TongThu` + new.`TienGoc`
+        WHERE `NgayBaoCao` = DATE(new.`NgayMoSo`) AND `LTK` = new.`LTK`;
+	END IF;
+END $$
+DELIMITER ;
 
 
-
-
-
-
-
-
+-- update khi đến ngày tính lãi 
+DROP trigger before_PHIEUGUITIEN_update;
+DELIMITER $$
+CREATE TRIGGER before_PHIEUGUITIEN_update
+BEFORE UPDATE ON `CNPM`.`PHIEUGUITIEN` 
+FOR EACH ROW
+BEGIN
+    DECLARE NAP DATETIME default (SELECT `NgayApDung` from `LOAITIETKIEM` WHERE `LOAITIETKIEM`.`id` = new.`LTK`);
+	DECLARE KH int DEFAULT (SELECT `KyHan` FROM `LOAITIETKIEM` WHERE `LOAITIETKIEM`.`id` = new.`LTK`);
+    set new.`NgayDaoHan` = old.`NgayDaoHan`;    
+    
+	WHILE (SELECT TIMESTAMPDIFF(DAY, new.`NgayDaoHan`, current_timestamp )) >= 0 DO
+		IF ((SELECT timestampdiff(DAY, new.`NgayDaoHan`, NAP)) >= KH) then
+        BEGIN
+			SET new.`LaiSuat` = (SELECT `LaiSuat` FROM `LOAITIETKIEM` WHERE `LOAITIETKIEM`.`id`= old.`LTK`);
+            SET new.`TienDu` = new.`TienDu` * 1.05;
+			SET new.`NgayDaoHan` = (SELECT DATE_ADD(new.`NgayDaoHan`, INTERVAL KH DAY));
+		END;
+		ELSE
+		BEGIN
+            SET new.`TienDu` = new.`TienDu` * 1.05;
+			SET new.`NgayDaoHan` = (SELECT DATE_ADD(new.`NgayDaoHan`, INTERVAL KH DAY));
+		END;
+		END IF;
+	END WHILE;
+-- cẬP NHẬP BÁO CÁO SỐ DOANH SỐ KHI ĐÓNG SỔ
+    IF new.`TienDu`= 0.0 and NOT EXISTS
+    (
+		SELECT * FROM `BAOCAODOANHSO` WHERE `NgayBaoCao` = DATE(new.`NgayMoSo`) AND `LTK` = new.`LTK` 
+	) then
+		INSERT INTO `BAOCAODOANHSO`(LTK, NGAYBAOCAO, TongThu, TongChi, ChenhLech) VALUES (new.`LTK`, new.`NgayDongSo`, 0, old.`TienDu`, -1*old.`TienDu`);
+	ELSEIF new.`TienDu` = 0.0 then
+		UPDATE `BAOCAODOANHSO` 
+        SET `TongChi` = `TongChi` + new.`TienDu`
+        WHERE `NgayBaoCao` = DATE(new.`NgayMoSo`) AND `LTK` = new.`LTK`;
+    END IF;
+END $$
+DELIMITER ;
+SELECT DATE_ADD("2020-10-21", INTERVAL 15 DAY);
+select 5*(1+0.00008);
