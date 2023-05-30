@@ -1,37 +1,57 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axiosDeposit from "../../api/axiosDeposit";
+import { createAsyncThunk } from "@reduxjs/toolkit"
+import axiosDeposit from "../../api/axiosDeposit"
 
-//thêm tất cả các phiếu 
+//hiển thị một số phiếu theo page, limit
 export const getAllDeposit = createAsyncThunk(
-    'deposit/getAllDeposit',
-    async function(){
-        try {
-            return await axiosDeposit.axiosGetAllDeposit()
-        } catch (error) {
-            return error.message
-        }
-    }
+	"deposit/getAllDeposit",
+	async function (data) {
+		const { page, limit } = data
+		try {
+			return (
+				page && limit && (await axiosDeposit.axiosGetAllDeposit(data))
+			)
+		} catch (error) {
+			return error.message
+		}
+	}
 )
 
-//thêm tất cả các phiếu của khách hàng 
+//hiển thị tất cả các phiếu của khách hàng
 export const getAllCustomerDeposit = createAsyncThunk(
-    'deposit/getAllCustomerDeposit',
-    async function(CMND){
-        try {
-            return await axiosDeposit.axiosGetAllCustomerDeposit(CMND)
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
+	"deposit/getAllCustomerDeposit",
+	async function (CMND) {
+		try {
+			return CMND && (await axiosDeposit.axiosGetAllCustomerDeposit(CMND))
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
+)
+// TẠo một phiếu gửi tiền mới
+export const postCreateDeposit = createAsyncThunk(
+	"deposit/postCreateDeposit",
+	async function (data) {
+		const { CMND, TienGoc, LTK } = data
+		try {
+			return (
+				CMND &&
+				TienGoc &&
+				LTK &&
+				(await axiosDeposit.axiosPostCreateDeposit(data))
+			)
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
 )
 //Update lại số tiền
 export const getUpdateDeposit = createAsyncThunk(
-    'deposit/getUpdateDepost',
-    async function(){
-        try {
-            await axiosDeposit.axiosGetUpdateDeposit()
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
+	"deposit/getUpdateDepost",
+	async function () {
+		try {
+			await axiosDeposit.axiosGetUpdateDeposit()
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
 )

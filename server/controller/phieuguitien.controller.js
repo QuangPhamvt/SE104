@@ -7,22 +7,42 @@ import {
 
 // lấy tất cả phiếu tồn tại
 export async function findDepositController(req, res) {
+	const page = req.query.page
+	const limit = req.query.limit
 	try {
-		const [data] = await mysql.query(
-			`select 
-                PGT.id, 
-                LTK.TenLoaiTietKiem, LTK.LaiSuat,
-                KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
-                PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
-                PGT.TienDu, PGT.TienGoc 
-            from PHIEUGUITIEN PGT
-            inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
-            inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
-            limit 2,10`
-		)
+		let data = {}
+		if (!page || !limit) {
+			data = await mysql.query(
+				`select 
+					PGT.id, 
+					LTK.TenLoaiTietKiem, LTK.LaiSuat,
+					KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
+					PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
+					PGT.TienDu, PGT.TienGoc 
+				from PHIEUGUITIEN PGT
+				inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
+				inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
+				order by NgayMoSo DESC
+				limit 0, 5`
+			)
+		} else
+			data = await mysql.query(
+				`select 
+				PGT.id, 
+				LTK.TenLoaiTietKiem, LTK.LaiSuat,
+				KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
+				PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
+				PGT.TienDu, PGT.TienGoc 
+			from PHIEUGUITIEN PGT
+			inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
+			inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
+			order by NgayMoSo DESC
+			limit ?, ?`,
+				[(page - 1) * limit, parseInt(limit)]
+			)
 		return res.status(200).json({
 			success: true,
-			data,
+			data: data[0],
 			message: "phieu gui tien",
 		})
 	} catch (error) {

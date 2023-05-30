@@ -1,18 +1,18 @@
-import { Router } from "express";
-import { 
-    createDepositController, 
-    deleteDepositController, 
-    findDepositController, 
-    findDepositCustomerController, 
-    updateDepositController} from "../controller/phieuguitien.controller.js";
-
+import { Router } from "express"
+import {
+	createDepositController,
+	deleteDepositController,
+	findDepositController,
+	findDepositCustomerController,
+	updateDepositController,
+} from "../controller/phieuguitien.controller.js"
 
 const phieuguitienRouter = Router()
 
 // Lấy tất cả phiếu tồn tại
 phieuguitienRouter.get("/", findDepositController)
 // cập nhập lại giá trị
-phieuguitienRouter.get("/update",  updateDepositController)
+phieuguitienRouter.get("/update", updateDepositController)
 // TẠo 1 phiếu gửi tiền
 phieuguitienRouter.post("/create", createDepositController)
 //Rut tiền
@@ -21,5 +21,3 @@ phieuguitienRouter.put("/drawout/:id", deleteDepositController)
 phieuguitienRouter.get("/:CMND", findDepositCustomerController)
 
 export default phieuguitienRouter
-
-
