@@ -17,13 +17,39 @@ export async function createDeposit({ CMND, TienGoc, LTK }) {
 		[ltkId.id, KH.id, TienGoc, TienGoc, new Date()]
 	)
 }
-
-export async function updateDrawOut(data) {
+export async function updateDepositCustomerModel(data) {
+	return mysql.query(
+		`update PHIEUGUITIEN
+		SET NgayDaoHan = current_timestamp()
+		WHERE MaKhachHang = ?`,
+		[data.id]
+	)
+}
+// update xoa phieu cua nguoi dung
+export async function updateDrawOut() {
 	return mysql.query(
 		`update PHIEUGUITIEN
         set Tien = 0, NgayDongSo = current_timestamp() 
         where id = ?`,
 		[data]
+	)
+}
+
+export async function findDepositModel(data) {
+	const { page, limit } = data
+	return mysql.query(
+		`select 
+			PGT.id, 
+			LTK.TenLoaiTietKiem, LTK.LaiSuat,
+			KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
+			PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
+			PGT.TienDu, PGT.TienGoc 
+		from PHIEUGUITIEN PGT
+		inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
+		inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
+		order by NgayMoSo DESC
+		limit ?, ?`,
+		[(page - 1) * limit, parseInt(limit)]
 	)
 }
 

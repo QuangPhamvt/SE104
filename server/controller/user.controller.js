@@ -1,48 +1,33 @@
 import { mysql } from "../models/index.js"
 import jwt from "jsonwebtoken"
+import { createUserModel, findUserModel } from "../models/user.model.js"
 
-export async function createUser(req, res) {
+//TẠO NGƯỜI SỬ DỤNG
+export async function createUser(req, res, next) {
 	const { username, password, TenNhom } = req.body
 	try {
-		const isExists = await mysql.query(
-			`select username from NGUOIDUNG where username = ?`,
-			[username]
-		)
-		if (!isExists || !password)
+		const [isExists] = await findUserModel(username)
+		console.log(isExists)
+		if (isExists || !password)
 			return res.status(400).json({
 				success: false,
 				message: "Đã tồn tại nhân vật này",
 			})
-
-		await mysql.query(
-			`
-            insert into NGUOIDUNG(username, MaNhom, password) values( ?, 
-                (
-                    select id from NHOMNGUOIDUNG where TenNhom = ?
-                ), ?)
-            `,
-			[username, TenNhom, password]
-		)
+		await createUserModel({ username, password, TenNhom })
 		return res.status(200).json({
 			success: true,
 			message: "Tao thanh cong",
 		})
 	} catch (error) {
-		console.log(error.message)
-		return res.status(500).json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }
 
-export async function loginUser(req, res) {
+//ĐĂng nhập vào hệ thống
+export async function loginUser(req, res, next) {
 	const { username, password } = req.body
 	try {
-		const [[data]] = await mysql.query(
-			`select * from NGUOIDUNG where username = ?`,
-			[username]
-		)
+		const [[data]] = await findUserModel(username)
 		console.log(data)
 		if (!data)
 			return res.status(401).json({
@@ -59,10 +44,6 @@ export async function loginUser(req, res) {
 			message: "Đăng nhập thành công ",
 		})
 	} catch (error) {
-		console.log(error.message)
-		return res.status(500).json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }

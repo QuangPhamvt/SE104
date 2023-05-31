@@ -2,44 +2,19 @@ import { mysql } from "../models/index.js"
 import {
 	createDeposit,
 	findDepositCustomerModel,
+	findDepositModel,
+	updateDepositCustomerModel,
 	updateDrawOut,
 } from "../models/phieuguitien.model.js"
 
 // lấy tất cả phiếu tồn tại
 export async function findDepositController(req, res) {
-	const page = req.query.page
-	const limit = req.query.limit
+	const { page, limit } = req.query
 	try {
-		let data = {}
+		let data = []
 		if (!page || !limit) {
-			data = await mysql.query(
-				`select 
-					PGT.id, 
-					LTK.TenLoaiTietKiem, LTK.LaiSuat,
-					KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
-					PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
-					PGT.TienDu, PGT.TienGoc 
-				from PHIEUGUITIEN PGT
-				inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
-				inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
-				order by NgayMoSo DESC
-				limit 0, 5`
-			)
-		} else
-			data = await mysql.query(
-				`select 
-				PGT.id, 
-				LTK.TenLoaiTietKiem, LTK.LaiSuat,
-				KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
-				PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
-				PGT.TienDu, PGT.TienGoc 
-			from PHIEUGUITIEN PGT
-			inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
-			inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
-			order by NgayMoSo DESC
-			limit ?, ?`,
-				[(page - 1) * limit, parseInt(limit)]
-			)
+			data = await findDepostModel(0, 5)
+		} else data = await findDepostModel(page, limit)
 		return res.status(200).json({
 			success: true,
 			data: data[0],
@@ -54,7 +29,7 @@ export async function findDepositController(req, res) {
 }
 
 // tìm tất cả phiếu của một người
-export async function findDepositCustomerController(req, res) {
+export async function findDepositCustomerController(req, res, next) {
 	const { CMND } = req.params
 	try {
 		const [data] = await findDepositCustomerModel(CMND)
@@ -75,15 +50,12 @@ export async function findDepositCustomerController(req, res) {
 			message: "oke oke",
 		})
 	} catch (error) {
-		res.json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }
 
 // tạo phiếu
-export async function createDepositController(req, res) {
+export async function createDepositController(req, res, next) {
 	try {
 		const [data] = await createDeposit(req.body)
 		if (!data)
@@ -97,45 +69,32 @@ export async function createDepositController(req, res) {
 			message: "oke oke",
 		})
 	} catch (error) {
-		res.json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }
 // cập nhập lại tiền cho 1 người
-export async function updateDepositController(req, res) {
+export async function updateDepositController(req, res, next) {
+	const id = req.params.id
 	try {
-		await mysql.query(
-			`update PHIEUGUITIEN
-            SET NgayDaoHan = ?`,
-			[new Date()]
-		)
+		await updateDepositCustomerModel(id)
 		return res.status(200).json({
 			success: true,
 			message: "đã cập nhạp thành công",
 		})
 	} catch (error) {
-		return res.json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }
 
 // Rút tiền
-export async function deleteDepositController(req, res) {
-	const { id } = req.params
+export async function deleteDepositController(req, res, next) {
 	try {
-		await updateDrawOut(id)
+		await updateDrawOut(req.params.id)
 		return res.json({
 			success: true,
 			message: "oke",
 		})
 	} catch (error) {
-		return res.json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }
