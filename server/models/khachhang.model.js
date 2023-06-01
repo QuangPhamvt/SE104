@@ -1,6 +1,6 @@
 import { mysql } from "./index.js"
 import { customAlphabet } from "nanoid"
-const nanoid = customAlphabet("1234567890abcdef", 15)
+const nanoid = customAlphabet("1234567890abcdef", 10)
 
 //LẤY TẤT CẢ KHÁCH HÀNG
 export async function findCustomer() {
@@ -10,8 +10,9 @@ export async function findCustomer() {
 export function createCustomer(data) {
 	const { HoTenKhachHang, CMND, DiaChi, Tuoi, NgaySinh, SDT, GioiTinh } = data
 	return mysql.query(
-		`insert into KHACHHANG(HoTenKhachHang, CMND, DiaChi, Tuoi, NgaySinh, SDT, GioiTinh) values( ?, ?, ?, ?, ?, ?, ?)`,
-		[HoTenKhachHang, CMND, DiaChi, Tuoi, NgaySinh, SDT, GioiTinh]
+		`insert into KHACHHANG(id, HoTenKhachHang, CMND, DiaChi, Tuoi, NgaySinh, SDT, GioiTinh) 
+		values(?, ?, ?, ?, ?, ?, ?, ?)`,
+		[nanoid(), HoTenKhachHang, CMND, DiaChi, Tuoi, NgaySinh, SDT, GioiTinh]
 	)
 }
 //tìm khách hàng

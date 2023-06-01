@@ -4,7 +4,7 @@ import {
 	findOneCustomer,
 } from "../models/khachhang.model.js"
 
-export async function createCustomerController(req, res) {
+export async function createCustomerController(req, res, next) {
 	const data = req.body
 	try {
 		await createCustomer(data)
@@ -13,14 +13,11 @@ export async function createCustomerController(req, res) {
 			message: "Tao Thanh Cong Tai Khoan",
 		})
 	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }
 
-export async function findCustomerController(req, res) {
+export async function findCustomerController(req, res, next) {
 	const { id } = req.params
 	try {
 		const [data] = await findOneCustomer(id)
@@ -30,9 +27,6 @@ export async function findCustomerController(req, res) {
 			data,
 		})
 	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: error.message,
-		})
+		next(error)
 	}
 }

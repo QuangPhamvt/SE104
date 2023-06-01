@@ -87,9 +87,11 @@ export async function updateDepositController(req, res, next) {
 }
 
 // Rút tiền
+
 export async function deleteDepositController(req, res, next) {
+	const { id } = req.params
 	try {
-		await updateDrawOut(req.params.id)
+		await updateDrawOut(id)
 		return res.json({
 			success: true,
 			message: "oke",

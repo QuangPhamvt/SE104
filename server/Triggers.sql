@@ -2,6 +2,7 @@
 -- insert PHIEUGUITIEN
 use CNPM;
 DROP TRIGGER IF EXISTS before_PHIEUGUITIEN_insert;
+DELIMITER //
 CREATE TRIGGER before_PHIEUGUITIEN_insert
 BEFORE INSERT ON PHIEUGUITIEN
 FOR EACH ROW
@@ -21,13 +22,15 @@ BEGIN
 		VALUES (NEW.`LTK`, NEW.`NgayMoSo`, NEW.`TienGoc`, 0, NEW.`TienGoc`);
 	ELSE
 		UPDATE `BAOCAODOANHSO` 
-        SET `TongThu` = `TongThu` + NEW.`TienGoc`
+        SET `TongThu` = `TongThu` + NEW.`TienGoc`, `ChenhLech` = `ChenhLech` + NEW.`TienGoc`
         WHERE `NgayBaoCao` = NEW.`NgayMoSo` AND `LTK` = NEW.`LTK`;
 	END IF;
-END;
+END //
+DELIMITER ;
 
 -- update khi đến ngày tính lãi 
 DROP TRIGGER IF EXISTS before_PHIEUGUITIEN_update;
+DELIMITER //
 CREATE TRIGGER before_PHIEUGUITIEN_update
 BEFORE UPDATE ON PHIEUGUITIEN
 FOR EACH ROW
@@ -51,7 +54,7 @@ BEGIN
 -- cẬP NHẬP BÁO CÁO SỐ DOANH SỐ KHI ĐÓNG SỔ
     IF NEW.`TienDu`= 0.0 and NOT EXISTS
     (
-		SELECT * FROM `BAOCAODOANHSO` WHERE `NgayBaoCao` =	NEW.`NgayDongSo` AND `LTK` = new.`LTK` 
+		SELECT * FROM `BAOCAODOANHSO` WHERE `NgayBaoCao` =	NEW.`NgayDongSo` AND `BAOCAODOANHSO`.`LTK` = new.`LTK` 
 	) then
 		BEGIN
         DECLARE money decimal(60,5);
@@ -65,7 +68,8 @@ BEGIN
         SET money = 1 + (SELECT `LaiSuat` from `LOAITIETKIEM` where `id` = 1)*( KyHan - timestampdiff(DAY, new.`NgayDongSo`, new.`NgayDaoHan`));
 		UPDATE `BAOCAODOANHSO` 
         SET `TongChi` = `TongChi` + old.`TienDu`, `ChenhLech` = `ChenhLech` - old.`TienDu`*money
-        WHERE `NgayBaoCao` = DATE(new.`NgayDongSo`) AND `LTK` = new.`LTK`;
+        WHERE `NgayBaoCao` = new.`NgayDongSo` AND `LTK` = new.`LTK`;
         END;
     END IF;
-END ;
+END //
+DELIMITER ;

@@ -55,7 +55,7 @@ CREATE TABLE `PHIEUGUITIEN`(
 );
 -- Tạo bảng báo cáo doanh số 
 CREATE TABLE `BAOCAODOANHSO`(
-	`id`            VARCHAR(10)         NOT NULL,
+	`id`            INT        NOT NULL auto_increment,
     `LTK`           VARCHAR(10)         NOT NULL,
     `NgayBaoCao`    DATE                DEFAULT (CURRENT_DATE),
     `TongThu`       DECIMAL(60,5)       DEFAULT 0,
