@@ -8,7 +8,7 @@ export async function createUser(req, res, next) {
 	try {
 		const [isExists] = await findUserModel(username)
 		console.log(isExists)
-		if (isExists || !password)
+		if (isExists === [] || !password)
 			return res.status(400).json({
 				success: false,
 				message: "Đã tồn tại nhân vật này",
@@ -28,13 +28,13 @@ export async function loginUser(req, res, next) {
 	const { username, password } = req.body
 	try {
 		const [[data]] = await findUserModel(username)
-		console.log(data)
-		if (!data)
+		console.log(data.id)
+		if (!data || password != data.password)
 			return res.status(401).json({
 				success: false,
 				message: "ĐĂng nhập sai thông tin",
 			})
-		const token = jwt.sign(data.id, "CNPM")
+		const token = jwt.sign({ username, password }, "CNPM")
 		res.cookie("authToken", token, {
 			maxAge: 360 * 24 * 60 * 60 * 100,
 			httpOnly: true,

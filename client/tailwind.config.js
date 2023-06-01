@@ -8,6 +8,8 @@ export default {
 			},
 			fontFamily: {
 				dancing: "Dancing Script",
+				nunito: "Nunito Sans",
+				sans: ["Nunito Sans"],
 			},
 		},
 	},

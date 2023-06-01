@@ -9,8 +9,8 @@ const userRouter = Router()
 
 userRouter.get("/", verifyMiddleware, async function (req, res) {
 	try {
-		console.log(req.body.user)
 		return res.status(200).json({
+			success: true,
 			message: "nice!",
 		})
 	} catch (error) {

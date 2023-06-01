@@ -10,10 +10,10 @@ export default async function verifyMiddleware(req, res, next) {
 			})
 		}
 
-		req.body.user = isToken
+		req.body.user = { isToken }
 		next()
 	} catch (error) {
-		return res.status(500).json({
+		return res.status(200).json({
 			success: false,
 			message: error.message,
 		})
