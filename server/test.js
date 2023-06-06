@@ -65,8 +65,8 @@ testRouter
 	})
 	.post("/createDeposit", async (req, res, next) => {
 		try {
-			console.log(await dataDeposit(10))
-			for (const deposit of await dataDeposit(10)) {
+			console.log(await dataDeposit(1000))
+			for (const deposit of await dataDeposit(1000)) {
 				console.log(deposit)
 				await createDeposit(deposit)
 			}
