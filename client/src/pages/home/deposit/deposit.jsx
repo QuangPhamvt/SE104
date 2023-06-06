@@ -8,8 +8,20 @@ import {
 	Button,
 	Input,
 } from "@material-tailwind/react"
+import { useSelector } from "react-redux"
 
 function DepositCard() {
+	const [data] = useSelector((store) => store.customer.data)
+	console.log(data)
+	const day = () => {
+		if (!data?.NgaySinh) return ""
+		const utcDate = new Date(data?.NgaySinh)
+		console.log(utcDate)
+		const date = utcDate.getUTCDate()
+		const month = utcDate.getMonth() < 12 ? utcDate.getMonth() + 1 : 1
+		const year = utcDate.getFullYear()
+		return `${date}-${month}-${year}`
+	}
 	return (
 		<main className=" col-span-2 h-full flex flex-col items-center gap-6">
 			<h1 className="mt-[40px] font-dancing text-primary select-none">
@@ -74,11 +86,11 @@ function DepositCard() {
 				</CardHeader>
 				<CardBody className="flex flex-col gap-4 pt-2 w-full">
 					<Typography className="font-bold">
-						Họ Tên Khách Hàng:{" "}
+						Họ Tên Khách Hàng: {data?.HoTenKhachHang}
 					</Typography>
-					<Typography>Ngày tháng năm sinh:</Typography>
-					<Typography>Chứng Minh Nhân Dân: </Typography>
-					<Typography>Địa Chỉ: </Typography>
+					<Typography>Ngày tháng năm sinh: {day()}</Typography>
+					<Typography>Chứng Minh Nhân Dân: {data?.CMND} </Typography>
+					<Typography>Địa Chỉ: {data?.DiaChi}</Typography>
 				</CardBody>
 			</Card>
 		</main>

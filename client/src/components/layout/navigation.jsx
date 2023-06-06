@@ -28,8 +28,8 @@ const Navigation = () => {
 		return () => document.body.removeEventListener("click", closeDropDown)
 	}, [])
 	return (
-		<div>
-			<Navbar className=" mx-auto grid grid-cols-12 z-50">
+		<div className=" ">
+			<Navbar className=" relative mx-auto grid grid-cols-12 z-50">
 				<div className="text-black col-span-5 text-center flex flex-row items-center">
 					<span className="text-4xl font-bold font-dancing italic">
 						Mami Nanami

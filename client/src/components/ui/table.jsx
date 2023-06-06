@@ -1,4 +1,5 @@
 import { Card, Typography } from "@material-tailwind/react"
+import { useSelector } from "react-redux"
 
 // const TABLE_ROWS = [
 // 	{
@@ -28,11 +29,13 @@ import { Card, Typography } from "@material-tailwind/react"
 // 	},
 // ]
 
-export default function Table({ head, data }) {
-	const TABLE_HEAD = head || []
+export default function Table(props) {
+	const data = useSelector((store) => store.deposit.data)
+	// eslint-disable-next-line react/prop-types
+	const TABLE_HEAD = props?.["head"] || []
 	const TABLE_ROWS = data || []
 	return (
-		<Card className="overflow-scroll h-[400px] w-[350px] rounded-xl overflow-x-hidden border-2 -z-50">
+		<Card className="overflow-scroll h-[400px] w-[350px] rounded-xl overflow-x-hidden border-2 ">
 			<table className="w-full min-w-max table-auto text-left relative">
 				<thead className=" sticky top-0 border-b-2 opacity-95 bg-white">
 					<tr className="">
@@ -60,8 +63,11 @@ export default function Table({ head, data }) {
 							: "p-4 border-b border-blue-gray-50"
 
 						const utcDate = new Date(NgayDaoHan)
-						const date = utcDate.getDay()
-						const month = utcDate.getMonth()
+						const date = utcDate.getUTCDate()
+						const month =
+							utcDate.getUTCMonth() < 12
+								? utcDate.getUTCMonth() + 1
+								: 1
 						const year = utcDate.getFullYear()
 						const string = `${date}-${month}-${year}`
 						return (
