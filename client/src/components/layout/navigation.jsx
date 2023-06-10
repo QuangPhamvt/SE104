@@ -10,6 +10,12 @@ import {
 } from "@material-tailwind/react"
 import { BsFillPersonFill } from "react-icons/bs"
 import Footer from "./footer"
+const array = [
+	{ name: "Phiếu Gửi Tiền", redirect: "deposit" },
+	{ name: "Customer", redirect: "customer" },
+	{ name: "Report", redirect: "report" },
+	{ name: "Search", redirect: "search" },
+]
 
 const Navigation = () => {
 	const navigate = useNavigate()
@@ -28,7 +34,7 @@ const Navigation = () => {
 		return () => document.body.removeEventListener("click", closeDropDown)
 	}, [])
 	return (
-		<div className=" ">
+		<>
 			<Navbar className=" relative mx-auto grid grid-cols-12 z-50">
 				<div className="text-black col-span-5 text-center flex flex-row items-center">
 					<span className="text-4xl font-bold font-dancing italic">
@@ -36,47 +42,28 @@ const Navigation = () => {
 					</span>
 				</div>
 				<ul className="flex flex-row gap-14 justify-end col-span-6 items-center">
-					<li>
-						<NavLink to="deposit">
-							<Typography
-								color="black"
-								variant="h4"
-								className="hover:text-blue-600/100"
+					{array.map((state, index) => (
+						<li key={index}>
+							<NavLink
+								to={state.redirect}
+								className={({ isActive }) =>
+									isActive ? `text-blue-800` : "text-black "
+								}
 							>
-								Phiếu Gửi Tiền
-							</Typography>
-						</NavLink>
-					</li>
-					<li>
-						<NavLink to="customer">
-							<Typography
-								color="black"
-								variant="h4"
-								className="hover:text-blue-600/100"
-							>
-								Customer
-							</Typography>
-						</NavLink>
-					</li>
-					<li>
-						<NavLink to="report">
-							<Typography
-								color="black"
-								variant="h4"
-								className="hover:text-blue-600/100"
-							>
-								Report
-							</Typography>
-						</NavLink>
-					</li>
+								<Typography variant="h4">
+									{state.name}
+								</Typography>
+							</NavLink>
+						</li>
+					))}
 				</ul>
 				<div className="col-span-1 m-auto relative z-50" ref={refOne}>
 					<button onClick={() => setIsShow((prev) => !prev)}>
 						<BsFillPersonFill className="bg-black text-4xl rounded-full" />
 					</button>
 					{isShow && (
-						<Card className="absolute top-10 -left-24 w-[260px] h-[200px]  p-4 shadow-xl shadow-blue-gray-900/5 z-50">
-							<List className="w-52 ">
+						<Card className="absolute top-10 -left-24 w-[260px] h-[200px] border-2 border-gray-200 p-4 shadow-2xl shadow-blue-gray-900/5 z-50">
+							<List className="w-52">
 								<ListItem>Profile</ListItem>
 								<ListItem>Settings</ListItem>
 								<ListItem>Log Out</ListItem>
@@ -87,7 +74,7 @@ const Navigation = () => {
 			</Navbar>
 			<Outlet />
 			<Footer />
-		</div>
+		</>
 	)
 }
 

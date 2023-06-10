@@ -1,10 +1,10 @@
 import { BsSearch } from "react-icons/bs"
 import { Input } from "@material-tailwind/react"
 import { useDispatch } from "react-redux"
-import Table from "../../../components/ui/table"
-import useForm from "../../../hooks/useForm"
-import { getAllCustomerDeposit } from "../../../store/deposit/depositThunk"
-import { getCustomer } from "../../../store/customer/customerThunk"
+import Table from "../../components/ui/table"
+import useForm from "../../hooks/useForm"
+import { getAllCustomerDeposit } from "../../store/deposit/depositThunk"
+import { getCustomer } from "../../store/customer/customerThunk"
 function LTKCard() {
 	const dispatch = useDispatch()
 	const [input, handleChange, handleSubmit] = useForm(

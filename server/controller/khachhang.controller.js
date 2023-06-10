@@ -21,7 +21,6 @@ export async function findCustomerController(req, res, next) {
 	const { id } = req.params
 	try {
 		const [data] = await findOneCustomer(id)
-		console.log(data)
 		res.json({
 			success: true,
 			data,

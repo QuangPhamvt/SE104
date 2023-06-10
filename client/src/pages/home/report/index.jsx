@@ -1,4 +1,4 @@
-const Report = () => {
+function Report() {
 	return <div>Report</div>
 }
 
