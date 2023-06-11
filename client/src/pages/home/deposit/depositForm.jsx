@@ -6,7 +6,7 @@ function DepositForm() {
 			action=""
 			className=" border-2 h-[400px] w-[800px] flex flex-col gap-12 p-11 rounded-3xl bg-[#D7F9FA] hover:shadow-lg"
 		>
-			<div className="w-full flex  items-center">
+			<div className="w-full flex items-center">
 				<label htmlFor="LTK" className=" w-60 text-xl font-bold">
 					Mã Loại Tiết Kiệm
 				</label>

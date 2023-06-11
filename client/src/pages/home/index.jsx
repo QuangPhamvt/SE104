@@ -21,7 +21,7 @@ function Home() {
 			data = <Report />
 			break
 	}
-	return <div className=" h-[800px] container mx-auto px-2 z-10">{data}</div>
+	return <div className="  container mx-auto px-2 z-10">{data}</div>
 }
 
 export default Home

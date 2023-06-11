@@ -9,6 +9,7 @@ import {
 	ListItem,
 } from "@material-tailwind/react"
 import { BsFillPersonFill } from "react-icons/bs"
+import { useCookies } from "react-cookie"
 import Footer from "./footer"
 const array = [
 	{ name: "Phiếu Gửi Tiền", redirect: "deposit" },
@@ -18,6 +19,7 @@ const array = [
 ]
 
 const Navigation = () => {
+	const [cookies, setCookie, removeCookie] = useCookies()
 	const navigate = useNavigate()
 	const isVerify = useSelector((store) => store.auth.success)
 	const [isShow, setIsShow] = useState(false)
@@ -66,7 +68,13 @@ const Navigation = () => {
 							<List className="w-52">
 								<ListItem>Profile</ListItem>
 								<ListItem>Settings</ListItem>
-								<ListItem>Log Out</ListItem>
+								<ListItem
+									onClick={() => {
+										console.log(cookies)
+									}}
+								>
+									<button>Log Out</button>
+								</ListItem>
 							</List>
 						</Card>
 					)}
