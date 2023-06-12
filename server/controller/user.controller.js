@@ -47,3 +47,10 @@ export async function loginUser(req, res, next) {
 		next(error)
 	}
 }
+
+export async function logoutUser(req, res, next) {
+	res.clearCookie("authToken").status(200).json({
+		success: false,
+		message: "not having token",
+	})
+}

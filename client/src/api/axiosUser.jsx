@@ -7,6 +7,7 @@ const axiosUser = {
 			password: data.password,
 		}),
 	axiosVerify: () => axiosClient.get("/user"),
+	axiosLogout: () => axiosClient.get("/user/logout"),
 }
 
 export default axiosUser

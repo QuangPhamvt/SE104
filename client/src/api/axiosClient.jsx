@@ -27,7 +27,8 @@ axiosClient.interceptors.response.use(async function (response) {
 		if (response && response.data) return response.data
 		return response
 	} catch (error) {
-		return error
+		console.log(error.response)
+		return error.response
 	}
 })
 

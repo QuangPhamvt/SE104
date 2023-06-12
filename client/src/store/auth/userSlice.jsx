@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getVerifyUser, postLoginUser } from "./userThunnk"
+import { getLogoutUser, getVerifyUser, postLoginUser } from "./userThunnk"
 
 const initialState = {
 	success: false,
@@ -15,6 +15,10 @@ const userSlice = createSlice({
 			state.message = action.payload.message
 		})
 		builder.addCase(getVerifyUser.fulfilled, (state, action) => {
+			state.success = action.payload.success
+			state.message = action.payload.message
+		})
+		builder.addCase(getLogoutUser.fulfilled, (state, action) => {
 			state.success = action.payload.success
 			state.message = action.payload.message
 		})

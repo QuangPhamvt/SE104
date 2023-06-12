@@ -10,7 +10,7 @@ import {
 import Table from "./table"
 function Search() {
 	return (
-		<div className="flex flex-col items-center bg-red-200 ">
+		<div className="flex flex-col items-center bg-[#C1EAF2] border-x-2">
 			<Card className="mt-10 w-3/4 items-center">
 				<CardHeader className="w-52 text-center">
 					<Typography variant="h2">Tìm Kiếm</Typography>
@@ -54,7 +54,13 @@ function Search() {
 					</form>
 				</CardBody>
 			</Card>
-			<div className=" w-4/5 h-[600px] my-10 bg-gray-800 flex justify-center rounded-3xl">
+			<div className=" w-4/5 h-[600px] my-4 flex flex-col justify-center ">
+				<Typography
+					variant={"h3"}
+					className="text-center underline underline-offset-8 font-dancing font-thin"
+				>
+					Danh sách phiếu gửi tiền
+				</Typography>
 				<Table />
 			</div>
 		</div>

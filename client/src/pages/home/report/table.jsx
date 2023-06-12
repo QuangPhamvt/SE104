@@ -38,7 +38,7 @@ const TABLE_ROWS = [
 ]
 function Table() {
 	return (
-		<Card className="overflow-scroll h-[500px] w-[800px] mt-12 ">
+		<Card className="overflow-scroll h-[500px] w-full mt-2 border-2 shadow-xl ">
 			<table className="w-full min-w-max table-auto text-left relative">
 				<thead className=" sticky top-0">
 					<tr>

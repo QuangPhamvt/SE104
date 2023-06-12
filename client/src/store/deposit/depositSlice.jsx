@@ -7,8 +7,14 @@ import {
 
 const initialState = {
 	data: [],
-	success: false,
-	message: "",
+	success: {
+		getAllCustomerDeposit: false,
+		postCreateDeposit: false,
+	},
+	message: {
+		getAllCustomerDeposit: "",
+		postCreateDeposit: "",
+	},
 }
 const depositSlice = createSlice({
 	name: "deposit",
@@ -28,14 +34,18 @@ const depositSlice = createSlice({
 				`deposit/getAllCustomerDeposit: ${action.payload.message}`
 			)
 			state.data = action.payload.data
-			state.message = action.payload.message
-			state.success = true
+			state.message.getAllCustomerDeposit = action.payload.message
+			state.success.getAllCustomerDeposit = true
 		})
 		// TẠo phiếu mới cho một người
 		builder.addCase(postCreateDeposit.fulfilled, (state, action) => {
 			console.log(`deposit/postCreateDeposit: ${action.payload.message}`)
+			state.success.postCreateDeposit = action.payload.success
+			state.message.postCreateDeposit = action.payload.message
+		})
+		builder.addCase(postCreateDeposit.rejected, (state, action) => {
 			state.success = action.payload.success
-			state.message = action.payload.message
+			state.success = action.payload.message
 		})
 	},
 })

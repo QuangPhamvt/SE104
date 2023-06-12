@@ -10,7 +10,7 @@ import {
 import Table from "./table"
 function Report() {
 	return (
-		<div className="flex flex-col items-center bg-red-200 ">
+		<div className="flex flex-col items-center bg-[#C1EAF2]">
 			<Card className="mt-10 w-3/4 items-center">
 				<CardHeader className=" w-96 text-center">
 					<Typography variant="h2">Báo cáo doanh số</Typography>
@@ -42,7 +42,13 @@ function Report() {
 					</form>
 				</CardBody>
 			</Card>
-			<div className=" w-4/5 h-[600px] my-10 bg-gray-800 flex justify-center rounded-3xl">
+			<div className=" w-4/5 h-[600px] my-4 flex flex-col justify-center ">
+				<Typography
+					variant={"h3"}
+					className="text-center underline underline-offset-8 font-dancing font-thin"
+				>
+					Danh Sách ngày báo cáo
+				</Typography>
 				<Table />
 			</div>
 		</div>

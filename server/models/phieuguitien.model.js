@@ -3,6 +3,7 @@ import { findOneCustomer } from "./khachhang.model.js"
 import { customAlphabet } from "nanoid"
 const nanoid = customAlphabet("123456789abcdef", 10)
 
+//tạo phiếu gửi tiền
 export async function createDeposit({ CMND, TienGoc, LTK }) {
 	const [[KH]] = await findOneCustomer(CMND)
 	console.log(KH.id)

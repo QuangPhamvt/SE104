@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import {
 	Typography,
@@ -9,8 +9,8 @@ import {
 	ListItem,
 } from "@material-tailwind/react"
 import { BsFillPersonFill } from "react-icons/bs"
-import { useCookies } from "react-cookie"
 import Footer from "./footer"
+import { getLogoutUser } from "../../store/auth/userThunnk"
 const array = [
 	{ name: "Phiếu Gửi Tiền", redirect: "deposit" },
 	{ name: "Customer", redirect: "customer" },
@@ -19,15 +19,16 @@ const array = [
 ]
 
 const Navigation = () => {
-	const [cookies, setCookie, removeCookie] = useCookies()
 	const navigate = useNavigate()
-	const isVerify = useSelector((store) => store.auth.success)
+	let isVerify = false
+	isVerify = useSelector((store) => store.auth.success)
 	const [isShow, setIsShow] = useState(false)
 	const refOne = useRef(null)
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		if (!isVerify) return navigate("/")
-	}, [])
+	}, [isVerify])
 	useEffect(() => {
 		function closeDropDown(e) {
 			if (!refOne.current.contains(e.target)) setIsShow(false)
@@ -37,19 +38,22 @@ const Navigation = () => {
 	}, [])
 	return (
 		<>
-			<Navbar className=" relative mx-auto grid grid-cols-12 z-50">
-				<div className="text-black col-span-5 text-center flex flex-row items-center">
-					<span className="text-4xl font-bold font-dancing italic">
+			<Navbar className=" relative mx-auto grid grid-cols-12 z-50 shadow-xl">
+				<div className="text-black col-span-3 text-center flex flex-row items-center">
+					<span className="text-4xl font-bold font-dancing italic text-primary">
 						Mami Nanami
 					</span>
 				</div>
-				<ul className="flex flex-row gap-14 justify-end col-span-6 items-center">
+				<ul className="flex flex-row justify-end col-span-8 items-center">
 					{array.map((state, index) => (
-						<li key={index}>
+						<li
+							key={index}
+							className="hover:bg-blue-gray-50 py-2 px-4 rounded-xl"
+						>
 							<NavLink
 								to={state.redirect}
 								className={({ isActive }) =>
-									isActive ? `text-blue-800` : "text-black "
+									isActive ? `text-[#1c93e8]` : "text-black "
 								}
 							>
 								<Typography variant="h4">
@@ -70,10 +74,10 @@ const Navigation = () => {
 								<ListItem>Settings</ListItem>
 								<ListItem
 									onClick={() => {
-										console.log(cookies)
+										dispatch(getLogoutUser())
 									}}
 								>
-									<button>Log Out</button>
+									Log Out
 								</ListItem>
 							</List>
 						</Card>

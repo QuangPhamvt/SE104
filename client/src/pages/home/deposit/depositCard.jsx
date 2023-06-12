@@ -17,7 +17,7 @@ function DepositCard() {
 		return `${date}-${month}-${year}`
 	}
 	return (
-		<Card className="mt-10 w-[800px] h-[200px] bg-[#D7F9FA] hover:shadow-xl items-center">
+		<Card className="mt-10 w-[800px] h-[200px] bg-[#C1EAF2] hover:shadow-xl items-center">
 			<CardHeader className=" text-center w-52">
 				<h2 className=" font-bold font-nunito">KHÁCH HÀNG</h2>
 			</CardHeader>

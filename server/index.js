@@ -10,7 +10,7 @@ import mysql from "mysql2"
 function errorHandle(error, req, res, next) {
 	console.log(`error ${error.message}`)
 	const status = error.status || 400
-	res.status(status).json({
+	return res.status(status).json({
 		success: false,
 		message: error.message,
 	})

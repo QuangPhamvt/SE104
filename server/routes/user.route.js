@@ -2,7 +2,11 @@ import { Router } from "express"
 import { customAlphabet } from "nanoid"
 import { mysql } from "../models/index.js"
 
-import { createUser, loginUser } from "../controller/user.controller.js"
+import {
+	createUser,
+	loginUser,
+	logoutUser,
+} from "../controller/user.controller.js"
 import verifyMiddleware from "../middleware/vetify.js"
 
 const userRouter = Router()
@@ -20,4 +24,5 @@ userRouter.get("/", verifyMiddleware, async function (req, res) {
 
 userRouter.post("/create", createUser)
 userRouter.post("/login", loginUser)
+userRouter.get("/logout", logoutUser)
 export default userRouter

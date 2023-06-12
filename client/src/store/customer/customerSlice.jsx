@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getCustomer } from "./customerThunk"
+import { createCustomer, getCustomer } from "./customerThunk"
 
 const initialState = {
 	data: [],
-	success: false,
-	message: "",
+	success: {
+		getCustomer: false,
+		createCustomer: false,
+	},
+	message: {
+		getCustomer: "",
+		createCustomer: "",
+	},
 }
 
 const customerSlice = createSlice({
@@ -14,7 +20,12 @@ const customerSlice = createSlice({
 	extraReducers: (build) => {
 		build.addCase(getCustomer.fulfilled, (state, action) => {
 			state.data = action.payload.data
-			state.success = action.payload.success
+			state.success.getCustomer = action.payload.success
+			state.message.getCustomer = action.payload.message
+		})
+		build.addCase(createCustomer.fulfilled, (state, action) => {
+			state.success.createCustomer = action.payload.success
+			state.message.createCustomer = action.payload.message
 		})
 	},
 })

@@ -23,7 +23,8 @@ export const getAllCustomerDeposit = createAsyncThunk(
 		try {
 			return CMND && (await axiosDeposit.axiosGetAllCustomerDeposit(CMND))
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.response.data)
+			return error.response.data
 		}
 	}
 )
@@ -40,7 +41,8 @@ export const postCreateDeposit = createAsyncThunk(
 				(await axiosDeposit.axiosPostCreateDeposit(data))
 			)
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.response.data)
+			return error.response.data
 		}
 	}
 )
