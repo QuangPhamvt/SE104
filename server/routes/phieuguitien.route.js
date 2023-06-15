@@ -4,6 +4,7 @@ import {
 	deleteDepositController,
 	findDepositController,
 	findDepositCustomerController,
+	findDepositSearchController,
 	updateDepositController,
 } from "../controller/phieuguitien.controller.js"
 
@@ -17,7 +18,10 @@ phieuguitienRouter.get("/update/:id", updateDepositController)
 phieuguitienRouter.post("/create", createDepositController)
 //Rut tiền
 phieuguitienRouter.put("/drawout/:id", deleteDepositController)
+// Lấy các phiếu theo search
+phieuguitienRouter.post("/search", findDepositSearchController)
 // Lấy các phiếu của 1 người
 phieuguitienRouter.get("/:CMND", findDepositCustomerController)
+// Lấy phiếu thỏa điều kiện
 
 export default phieuguitienRouter

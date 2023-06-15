@@ -3,6 +3,7 @@ import {
 	getAllCustomerDeposit,
 	getAllDeposit,
 	postCreateDeposit,
+	postSearchDeposit,
 } from "./depositThunk"
 
 const initialState = {
@@ -10,10 +11,12 @@ const initialState = {
 	success: {
 		getAllCustomerDeposit: false,
 		postCreateDeposit: false,
+		postSearchDeposit: false,
 	},
 	message: {
 		getAllCustomerDeposit: "",
 		postCreateDeposit: "",
+		postSearchDeposit: "",
 	},
 }
 const depositSlice = createSlice({
@@ -28,6 +31,13 @@ const depositSlice = createSlice({
 			state.message = action.payload.message
 			state.success = true
 		})
+		// Lấy phiếu theo search
+		builder.addCase(postSearchDeposit.fulfilled, (state, action) => {
+			console.log(`deposit/postSearchDeposit: ${action.payload.message}`)
+			state.data = action.payload.data
+			state.message.postSearchDeposit = action.payload.message
+			state.success.postSearchDeposit = action.payload.success
+		})
 		// Lấy tất cả các phiểu của một người
 		builder.addCase(getAllCustomerDeposit.fulfilled, (state, action) => {
 			console.log(
@@ -35,17 +45,13 @@ const depositSlice = createSlice({
 			)
 			state.data = action.payload.data
 			state.message.getAllCustomerDeposit = action.payload.message
-			state.success.getAllCustomerDeposit = true
+			state.success.getAllCustomerDeposit = action.payload.success
 		})
 		// TẠo phiếu mới cho một người
 		builder.addCase(postCreateDeposit.fulfilled, (state, action) => {
 			console.log(`deposit/postCreateDeposit: ${action.payload.message}`)
 			state.success.postCreateDeposit = action.payload.success
 			state.message.postCreateDeposit = action.payload.message
-		})
-		builder.addCase(postCreateDeposit.rejected, (state, action) => {
-			state.success = action.payload.success
-			state.success = action.payload.message
 		})
 	},
 })

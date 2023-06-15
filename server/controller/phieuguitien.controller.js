@@ -2,6 +2,7 @@ import { mysql } from "../models/index.js"
 import {
 	createDeposit,
 	findDepositCustomerModel,
+	findDepositSearchModel,
 	findDepositModel,
 	updateDepositCustomerModel,
 	updateDrawOut,
@@ -53,7 +54,21 @@ export async function findDepositCustomerController(req, res, next) {
 		next(error)
 	}
 }
-
+// Tìm phiếu theo search
+export async function findDepositSearchController(req, res, next) {
+	const { LTK, CMND, NgayMoSo } = req.body
+	console.log(req.body)
+	try {
+		const [data] = await findDepositSearchModel({ LTK, CMND, NgayMoSo })
+		return res.status(200).json({
+			success: true,
+			data,
+			message: "Search oke",
+		})
+	} catch (error) {
+		next(error)
+	}
+}
 // tạo phiếu
 export async function createDepositController(req, res, next) {
 	try {
@@ -87,7 +102,6 @@ export async function updateDepositController(req, res, next) {
 }
 
 // Rút tiền
-
 export async function deleteDepositController(req, res, next) {
 	const { id } = req.params
 	try {

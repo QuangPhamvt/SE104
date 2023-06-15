@@ -28,6 +28,22 @@ export const getAllCustomerDeposit = createAsyncThunk(
 		}
 	}
 )
+//Lấy theo search phiếu
+export const postSearchDeposit = createAsyncThunk(
+	"deposit/postSearchDeposit",
+	async function ({ LTK, CMND, NgayMoSo }) {
+		try {
+			return await axiosDeposit.axiosPostSearchDeposit({
+				LTK,
+				CMND,
+				NgayMoSo,
+			})
+		} catch (error) {
+			console.log(error.response.data)
+			return error.response.data
+		}
+	}
+)
 // TẠo một phiếu gửi tiền mới
 export const postCreateDeposit = createAsyncThunk(
 	"deposit/postCreateDeposit",

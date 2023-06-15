@@ -1,14 +1,29 @@
 import {
+	Button,
 	Card,
 	CardBody,
 	CardHeader,
 	Input,
-	Option,
-	Select,
+	Radio,
 	Typography,
 } from "@material-tailwind/react"
 import Table from "./table"
+import useForm from "../../../hooks/useForm"
+import { useDispatch } from "react-redux"
+import { postSearchDeposit } from "../../../store/deposit/depositThunk"
+const array = ["Không Kỳ Hạn", "3 Tháng", "6 Tháng"]
 function Search() {
+	const dispatch = useDispatch()
+	const [input, handleChange, handleSubmit, reset] = useForm(
+		{
+			LTK: "",
+			CMND: "",
+			NgayMoSo: "",
+		},
+		(input) => {
+			dispatch(postSearchDeposit(input))
+		}
+	)
 	return (
 		<div className="flex flex-col items-center bg-[#C1EAF2] border-x-2">
 			<Card className="mt-10 w-3/4 items-center">
@@ -16,26 +31,40 @@ function Search() {
 					<Typography variant="h2">Tìm Kiếm</Typography>
 				</CardHeader>
 				<CardBody className="w-full">
-					<form action="" className="flex flex-col gap-y-8">
+					<form
+						action=""
+						className="flex flex-col gap-y-8"
+						onSubmit={handleSubmit}
+					>
 						<div className="flex flex-row justify-start gap-16">
 							<label className="w-40">Loại Kỳ Hàn</label>
-							<div className="w-72">
-								<Select variant="outlined" label="loại kỳ hạn">
-									<Option>Không Kỳ Hạn</Option>
-									<Option>3 Tháng</Option>
-									<Option>6 Tháng</Option>
-								</Select>
+							<div
+								className="w-[600px] flex flex-row gap-x-10"
+								onChange={handleChange}
+							>
+								{array.map((state, index) => (
+									<Radio
+										key={index}
+										id={index}
+										name="LTK"
+										value={state}
+										label={state}
+									/>
+								))}
 							</div>
 						</div>
 						<div className="flex flex-row justify-start gap-16">
 							<label htmlFor="" className="w-40">
 								Khách Hàng
 							</label>
-							<div className="w-72">
+							<div className="w-[600px]">
 								<Input
 									label="Khách Hàng"
 									variant="outlined"
 									type="text"
+									name="CMND"
+									value={input.CMND}
+									onChange={handleChange}
 								/>
 							</div>
 						</div>
@@ -43,13 +72,28 @@ function Search() {
 							<label htmlFor="" className="w-40">
 								Ngày gửi
 							</label>
-							<div className="w-72">
+							<div className="w-[600px]">
 								<Input
 									label="Khách Hàng"
 									variant="outlined"
 									type="date"
+									name="NgayMoSo"
+									value={input.NgayMoSo}
+									onChange={handleChange}
 								/>
 							</div>
+						</div>
+						<div className="flex flex-row justify-end gap-x-8 mr-8">
+							<Button variant="gradient" type="submit">
+								Xác Nhận
+							</Button>
+							<Button
+								variant="outlined"
+								color="red"
+								onClick={reset}
+							>
+								Huy
+							</Button>
 						</div>
 					</form>
 				</CardBody>
