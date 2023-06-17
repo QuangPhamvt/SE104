@@ -83,13 +83,12 @@ CREATE TABLE
     );
 
 -- Tạo bảng Chức năng
-
 CREATE TABLE
     `CHUCNANG`(
         `id` INT PRIMARY KEY AUTO_INCREMENT,
         `TenChucNang` VARCHAR(30) NOT NULL,
-        `Bang` varchar(30) NOT NULL,
-        `HanhDong` VARCHAR(30) NOT NULL
+        `Url` VARCHAR(100) NOT NULL,
+        `Action` VARCHAR(30) NOT NULL
     );
 
 -- TẠo bảng NHÓM NGƯỜI DUNG

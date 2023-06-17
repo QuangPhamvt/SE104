@@ -4,6 +4,7 @@ import khachhangRouter from "./khachhang.route.js"
 import userRouter from "./user.route.js"
 import testRouter from "../test.js"
 import baocaoRouter from "./baocao.route.js"
+import thamsoRouter from "./thamso.route.js"
 
 const router = Router()
 
@@ -16,6 +17,7 @@ router.use("/deposit", phieuguitienRouter)
 router.use("/customer", khachhangRouter)
 router.use("/report", baocaoRouter)
 router.use("/user", userRouter)
+router.use("/parameter", thamsoRouter)
 router.use("/test", testRouter)
 
 export default router

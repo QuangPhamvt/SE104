@@ -8,22 +8,24 @@ import {
 	updateDepositController,
 } from "../controller/phieuguitien.controller.js"
 import verifyMiddleware from "../middleware/vetify.js"
+import { permission } from "../middleware/permissions.js"
 
 const phieuguitienRouter = Router()
 //middleware
-phieuguitienRouter.use(verifyMiddleware)
-// Lấy tất cả phiếu tồn tại
-phieuguitienRouter.get("/", findDepositController)
-// cập nhập lại giá trị
-phieuguitienRouter.get("/update/:id", updateDepositController)
-// Lấy các phiếu của 1 người
-phieuguitienRouter.get("/:CMND", findDepositCustomerController)
-// TẠo 1 phiếu gửi tiền
-phieuguitienRouter.post("/create", createDepositController)
-// Lấy các phiếu theo search
-phieuguitienRouter.post("/search", findDepositSearchController)
-//Rut tiền
-phieuguitienRouter.put("/drawout/:id", deleteDepositController)
-// Lấy phiếu thỏa điều kiện
+phieuguitienRouter
+	.use(verifyMiddleware)
+	.use("/update", permission)
+	// Lấy tất cả phiếu tồn tại
+	.get("/", permission, findDepositController)
+	// Lấy các phiếu của 1 người
+	.get("/:CMND", findDepositCustomerController)
+	// cập nhập lại giá trị
+	.get("/update/:id", updateDepositController)
+	// TẠo 1 phiếu gửi tiền
+	.post("/create", permission, createDepositController)
+	// Lấy các phiếu theo search
+	.post("/search", permission, findDepositSearchController)
+	//Rut tiền
+	.put("/drawout/:id", permission, deleteDepositController)
 
 export default phieuguitienRouter

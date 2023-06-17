@@ -16,6 +16,10 @@ BEGIN
 		SET NEW.`LaiSuat` = (SELECT `LaiSuat` FROM `LOAITIETKIEM` WHERE `id` = NEW.`LTK`);
 	END IF;
 
+	IF (NEW.`TienGoc` < (SELECT SoTienGuiBanDauToiThieu FROM  THAMSO)) THEN
+		SET NEW.`id` = NULL;
+	END IF;
+
     -- cập nhập lại danh sách báo cáo khi thêm
     IF NOT EXISTS (SELECT * FROM `BAOCAODOANHSO` WHERE `NgayBaoCao` = NEW.`NgayMoSo` AND `LTK` = NEW.`LTK`) then
 		INSERT INTO `BAOCAODOANHSO`(LTK, NGAYBAOCAO, TongThu, TongChi, ChenhLech) 

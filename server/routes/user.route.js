@@ -1,28 +1,21 @@
 import { Router } from "express"
 import { customAlphabet } from "nanoid"
 import { mysql } from "../models/index.js"
-
 import {
 	createUser,
+	getToken,
 	loginUser,
 	logoutUser,
 } from "../controller/user.controller.js"
 import verifyMiddleware from "../middleware/vetify.js"
+import { permission } from "../middleware/permissions.js"
 
 const userRouter = Router()
 
-userRouter.get("/", verifyMiddleware, async function (req, res) {
-	try {
-		return res.status(200).json({
-			success: true,
-			message: "nice!",
-		})
-	} catch (error) {
-		console.log(error.message)
-	}
-})
-
-userRouter.post("/create", createUser)
-userRouter.post("/login", loginUser)
-userRouter.get("/logout", logoutUser)
+userRouter
+	.post("/login", loginUser)
+	.use(verifyMiddleware)
+	.get("/", permission, getToken)
+	.get("/logout", permission, logoutUser)
+	.post("/create", permission, createUser)
 export default userRouter

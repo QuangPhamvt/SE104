@@ -2,6 +2,18 @@ import { mysql } from "../models/index.js"
 import jwt from "jsonwebtoken"
 import { createUserModel, findUserModel } from "../models/user.model.js"
 
+//get token
+export async function getToken(req, res, next) {
+	try {
+		return res.status(200).json({
+			success: true,
+			message: "nice!",
+		})
+	} catch (error) {
+		console.log(error.message)
+	}
+}
+
 //TẠO NGƯỜI SỬ DỤNG
 export async function createUser(req, res, next) {
 	const { username, password, TenNhom } = req.body
@@ -23,7 +35,7 @@ export async function createUser(req, res, next) {
 	}
 }
 
-//ĐĂng nhập vào hệ thống
+//Đăng nhập vào hệ thống
 export async function loginUser(req, res, next) {
 	const { username, password } = req.body
 	try {

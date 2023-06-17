@@ -1,16 +1,9 @@
+import { findAllReportModel } from "../models/baocao.model.js"
 import { mysql } from "../models/index.js"
 
 export async function findAllReportConller(req, res, next) {
 	try {
-		const [data] = await mysql.query(
-			`select 
-				LTK.TenLoaiTietKiem as LTK, 
-				NgayBaoCao, TongThu, 
-				TongChi, ChenhLech 
-			from BAOCAODOANHSO BCDS
-			inner join LOAITIETKIEM LTK on LTK.id = BCDS.LTK`
-		)
-		console.log(data)
+		const [data] = await findAllReportModel()
 		return res.status(200).json({
 			success: true,
 			data,
