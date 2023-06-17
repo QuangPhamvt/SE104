@@ -2,8 +2,7 @@ import axiosClient from "./axiosClient"
 
 const axiosDeposit = {
 	//Lấy search
-	axiosPostSearchDeposit: ({ LTK, CMND, NgayMoSo }) =>
-		axiosClient.post("deposit/search", { LTK, CMND, NgayMoSo }),
+	axiosPostSearchDeposit: (data) => axiosClient.post("deposit/search", data),
 	//Lấy tất cả danh sách
 	axiosGetAllDeposit: ({ page, limit }) =>
 		axiosClient.get("deposit", { params: { page, limit } }),

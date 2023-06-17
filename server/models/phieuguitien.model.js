@@ -21,6 +21,7 @@ export async function createDeposit({ CMND, TienGoc, LTK }) {
 		[nanoid(), ltkId.id, KH.id, TienGoc, TienGoc, new Date()]
 	)
 }
+// update phieu
 export async function updateDepositCustomerModel(data) {
 	return mysql.query(
 		`update PHIEUGUITIEN
@@ -43,8 +44,8 @@ export async function updateDrawOut(data) {
 //Tìm kiếm 1 trang phiếu
 export async function findDepositModel(data) {
 	const { page, limit } = data
-	return mysql.query(
-		`select 
+	const query = `
+		select 
 			PGT.id, 
 			LTK.TenLoaiTietKiem, LTK.LaiSuat,
 			KH.HoTenKhachHang, KH.CMND, KH.DiaChi, 
@@ -54,44 +55,30 @@ export async function findDepositModel(data) {
 		inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
 		inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
 		order by NgayMoSo DESC
-		limit ?, ?`,
-		[(page - 1) * limit, parseInt(limit)]
-	)
+		limit ?, ?`
+	return mysql.query(query, [(page - 1) * limit, parseInt(limit)])
 }
 //Tìm kiếm phiếu mở rộng search
 export async function findDepositSearchModel(data) {
-	const { LTK, CMND, NgayMoSo } = data
-	let array = []
-	if (LTK && CMND && NgayMoSo) array.push(LTK, CMND, NgayMoSo)
-	else if (CMND && NgayMoSo) array.push(CMND, NgayMoSo)
-	else if (LTK && NgayMoSo) array.push(LTK, NgayMoSo)
-	else if (LTK && CMND) array.push(LTK, CMND)
-	else if (LTK) array.push(LTK)
-	else if (CMND) array.push(CMND)
-	else if (NgayMoSo) array.push(NgayMoSo)
-	console.log(array)
-	return mysql.query(
-		`select 
+	const stringNull = " is not null"
+	const array = Object.values(data)
+	const query = `
+		select 
 			PGT.id, 
 			LTK.TenLoaiTietKiem, LTK.LaiSuat,
 			PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
 			PGT.TienDu, PGT.TienGoc 
-		from PHIEUGUITIEN PGT
-		inner join KHACHHANG KH on PGT.MaKhachHang = KH.id
-		inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
+		from CNPM.PHIEUGUITIEN PGT
+		inner join CNPM.KHACHHANG KH on PGT.MaKhachHang = KH.id
+		inner join CNPM.LOAITIETKIEM LTK on LTK.id = PGT.LTK
 		where 
-			${LTK ? "TenLoaiTietKiem = ? " : ""}
-			${CMND && LTK ? " and CMND = ? " : CMND ? " CMND = ?" : ""}
-			${
-				(LTK || CMND) && NgayMoSo
-					? " and NgayMoSo = ? "
-					: NgayMoSo
-					? "NgayMoSo = ?"
-					: ""
-			}
-		`,
-		array
-	)
+			TenLoaiTietKiem ${data?.LTK ? " = ?" : stringNull} and
+			HoTenKhachHang ${data?.HoTenKhachHang ? " = ? " : stringNull} and
+			SDT ${data?.SDT ? " = ?" : stringNull} and
+			CMND ${data?.CMND ? " = ?" : stringNull} and
+			NgayMoSo ${data?.NgayMoSo ? " = ?" : stringNull} 
+		`
+	return mysql.query(query, array)
 }
 
 export async function findDepositCustomerModel(CMND) {

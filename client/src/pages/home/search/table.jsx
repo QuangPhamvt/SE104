@@ -1,5 +1,6 @@
 import { Card, Typography } from "@material-tailwind/react"
 import { useSelector } from "react-redux"
+import DialogForm from "./dialogTable"
 
 const TABLE_HEAD = [
 	"Mã Phiếu",
@@ -11,34 +12,6 @@ const TABLE_HEAD = [
 	"Tiền Dư",
 	"Ngày Đóng Sổ",
 ]
-
-// const TABLE_ROWS = [
-// 	{
-// 		name: "John Michael",
-// 		job: "Manager",
-// 		date: "23/04/18",
-// 	},
-// 	{
-// 		name: "Alexa Liras",
-// 		job: "Developer",
-// 		date: "23/04/18",
-// 	},
-// 	{
-// 		name: "Laurent Perrier",
-// 		job: "Executive",
-// 		date: "19/09/17",
-// 	},
-// 	{
-// 		name: "Michael Levi",
-// 		job: "Developer",
-// 		date: "24/12/08",
-// 	},
-// 	{
-// 		name: "Richard Gran",
-// 		job: "Manager",
-// 		date: "04/10/21",
-// 	},
-// ]
 function Table() {
 	const TABLE_ROWS = useSelector((store) => store.deposit.data)
 	console.log(TABLE_ROWS)
@@ -89,7 +62,7 @@ function Table() {
 									? NMS.getUTCMonth() + 1
 									: 1
 							let year = NMS.getFullYear()
-							NMS = `${date}-${month}-${year}`
+							NMS = `${date + 1}-${month}-${year}`
 
 							let NDH = new Date(NgayDaoHan)
 							date = NDH.getUTCDate()
@@ -98,17 +71,27 @@ function Table() {
 									? NDH.getUTCMonth() + 1
 									: 1
 							year = NDH.getFullYear()
-							NDH = `${date}-${month}-${year}`
+							NDH = `${date + 1}-${month}-${year}`
+
+							let NDS = new Date(NgayDongSo)
+							date = NDS.getUTCDate()
+							month =
+								NDS.getUTCMonth() < 12
+									? NDS.getUTCMonth() + 1
+									: 1
+							year = NDS.getFullYear()
+							NDS = `${date + 1}-${month}-${year}`
 
 							return (
-								<tr key={id}>
-									<td className={classes}>
+								<tr key={id} className="hover:text-blue-200">
+									<td
+										className={`${classes} hover:cursor-pointer`}
+									>
 										<Typography
 											variant="small"
-											color="blue-gray"
 											className="font-normal"
 										>
-											{id}
+											<DialogForm id={id} />
 										</Typography>
 									</td>
 									<td
@@ -116,7 +99,6 @@ function Table() {
 									>
 										<Typography
 											variant="small"
-											color="blue-gray"
 											className="font-normal"
 										>
 											{TenLoaiTietKiem}
@@ -125,7 +107,6 @@ function Table() {
 									<td className={classes}>
 										<Typography
 											variant="small"
-											color="blue-gray"
 											className="font-normal"
 										>
 											{LaiSuat}
@@ -135,8 +116,6 @@ function Table() {
 										className={`${classes} bg-blue-gray-50/50`}
 									>
 										<Typography
-											as="a"
-											href="#"
 											variant="small"
 											className="font-medium"
 										>
@@ -145,8 +124,6 @@ function Table() {
 									</td>
 									<td className={{ classes }}>
 										<Typography
-											as="a"
-											href="#"
 											variant="small"
 											className="font-medium text-center"
 										>
@@ -157,8 +134,6 @@ function Table() {
 										className={`${classes} bg-blue-gray-50/50`}
 									>
 										<Typography
-											as="a"
-											href="#"
 											variant="small"
 											className="font-medium"
 										>
@@ -167,8 +142,6 @@ function Table() {
 									</td>
 									<td className={{ classes }}>
 										<Typography
-											as="a"
-											href="#"
 											variant="small"
 											className="font-medium text-center"
 										>
@@ -179,14 +152,10 @@ function Table() {
 										className={`${classes} bg-blue-gray-50/50`}
 									>
 										<Typography
-											as="a"
-											href="#"
 											variant="small"
 											className="font-medium"
 										>
-											{NgayDongSo
-												? NgayDongSo
-												: "00-00-00"}
+											{NgayDongSo ? NDS : "00-00-00"}
 										</Typography>
 									</td>
 								</tr>

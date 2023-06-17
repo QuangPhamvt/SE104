@@ -31,13 +31,9 @@ export const getAllCustomerDeposit = createAsyncThunk(
 //Lấy theo search phiếu
 export const postSearchDeposit = createAsyncThunk(
 	"deposit/postSearchDeposit",
-	async function ({ LTK, CMND, NgayMoSo }) {
+	async function (data) {
 		try {
-			return await axiosDeposit.axiosPostSearchDeposit({
-				LTK,
-				CMND,
-				NgayMoSo,
-			})
+			return await axiosDeposit.axiosPostSearchDeposit(data)
 		} catch (error) {
 			console.log(error.response.data)
 			return error.response.data

@@ -10,8 +10,11 @@ function useForm(initialState = {}, onSubmit) {
 	}
 	function handleSubmit(event) {
 		event.preventDefault()
-		console.log(input)
-		onSubmit?.(input)
+		let object = {}
+		for (const key in input) {
+			input[key] && (object[key] = input[key])
+		}
+		onSubmit?.(object)
 	}
 	function reset() {
 		setInput(() => initialState)

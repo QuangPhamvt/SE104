@@ -136,7 +136,7 @@ const CustomerCard = () => {
 						<Dialog
 							open={open}
 							handler={handleOpen}
-							className=" duration-100 ease-linear delay-0 animate-none"
+							className=" duration-0 ease-linear  animate-none"
 						>
 							<DialogHeader>Xác Nhận</DialogHeader>
 							{isCreateCustomer ? (

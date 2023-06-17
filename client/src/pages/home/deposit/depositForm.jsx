@@ -13,6 +13,14 @@ import { postCreateDeposit } from "../../../store/deposit/depositThunk"
 import useForm from "../../../hooks/useForm"
 
 const array = ["Không Kỳ Hạn", "3 Tháng", "6 Tháng"]
+const array_form = [
+	{ label: "Người Gửi", type: "text", name: "CMND" },
+	{
+		label: "Số Tiền",
+		type: "number",
+		name: "TienGoc",
+	},
+]
 function DepositForm() {
 	const dispatch = useDispatch()
 	const isCreateDeposit = useSelector(
@@ -28,8 +36,8 @@ function DepositForm() {
 			CMND: "",
 			TienGoc: 0,
 		},
-		(input) => {
-			dispatch(postCreateDeposit(input))
+		(object) => {
+			dispatch(postCreateDeposit(object))
 		}
 	)
 	return (
@@ -56,37 +64,28 @@ function DepositForm() {
 				</div>
 			</div>
 
-			<div className="w-full flex  items-center">
-				<label htmlFor="Customer" className=" w-60 text-xl font-bold">
-					Người gửi
-				</label>
-				<div>
-					<Input
-						onChange={handleChange}
-						variant="outlined"
-						label="Người gửi"
-						type="text"
-						name="CMND"
-						value={input.CMND || ""}
-					/>
-				</div>
-			</div>
-
-			<div className="w-full flex items-center">
-				<label htmlFor="Money" className=" w-60 text-xl font-bold">
-					Số Tiền gửi
-				</label>
-				<div>
-					<Input
-						onChange={handleChange}
-						variant="outlined"
-						label="Số tiền"
-						type="number"
-						value={input.TienGoc || ""}
-						name="TienGoc"
-					/>
-				</div>
-			</div>
+			{array_form.map((state, index) => {
+				return (
+					<div key={index} className="w-full flex  items-center">
+						<label
+							htmlFor="Customer"
+							className=" w-60 text-xl font-bold"
+						>
+							{state.label}
+						</label>
+						<div>
+							<Input
+								onChange={handleChange}
+								variant="outlined"
+								label={state.label}
+								type={state.type}
+								name={state.name}
+								value={input[state.name] || ""}
+							/>
+						</div>
+					</div>
+				)
+			})}
 
 			<div className="flex flex-row-reverse gap-5">
 				<Button
@@ -108,7 +107,7 @@ function DepositForm() {
 					<Dialog
 						open={open}
 						handler={handleOpen}
-						className=" duration-100 ease-linear delay-0 animate-none"
+						className=" duration-0 ease-linear animate-none"
 					>
 						<DialogHeader>Xác Nhận</DialogHeader>
 						{isCreateDeposit ? (

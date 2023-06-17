@@ -46,21 +46,22 @@ const Navigation = () => {
 				</div>
 				<ul className="flex flex-row justify-end col-span-8 items-center">
 					{array.map((state, index) => (
-						<li
+						<NavLink
 							key={index}
-							className="hover:bg-blue-gray-50 py-2 px-4 rounded-xl"
+							to={state.redirect}
+							className={({ isActive }) =>
+								isActive ? `text-[#1c93e8]` : "text-black "
+							}
 						>
-							<NavLink
-								to={state.redirect}
-								className={({ isActive }) =>
-									isActive ? `text-[#1c93e8]` : "text-black "
-								}
+							<li
+								key={index}
+								className="hover:bg-blue-gray-50 py-2 px-4 rounded-xl"
 							>
 								<Typography variant="h4">
 									{state.name}
 								</Typography>
-							</NavLink>
-						</li>
+							</li>
+						</NavLink>
 					))}
 				</ul>
 				<div className="col-span-1 m-auto relative z-50" ref={refOne}>

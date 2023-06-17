@@ -56,10 +56,9 @@ export async function findDepositCustomerController(req, res, next) {
 }
 // Tìm phiếu theo search
 export async function findDepositSearchController(req, res, next) {
-	const { LTK, CMND, NgayMoSo } = req.body
 	console.log(req.body)
 	try {
-		const [data] = await findDepositSearchModel({ LTK, CMND, NgayMoSo })
+		const [data] = await findDepositSearchModel(req.body)
 		return res.status(200).json({
 			success: true,
 			data,
