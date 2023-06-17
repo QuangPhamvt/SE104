@@ -1,7 +1,7 @@
 import useForm from "../hooks/useForm"
 import Footer from "../components/layout/footer"
 import { useDispatch, useSelector } from "react-redux"
-import { getVerifyUser, postLoginUser } from "../store/auth/userThunnk"
+import { getVerifyUser, postLoginUser } from "../store/auth/userThunk"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -9,7 +9,7 @@ function Landing() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	let isVerify = false
-	isVerify = useSelector((store) => store.auth.success)
+	isVerify = useSelector((store) => store.auth.success.verify)
 	const [input, handleChange, handleSubmit] = useForm(
 		{
 			username: "",

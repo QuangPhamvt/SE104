@@ -6,25 +6,26 @@ import {
 	DialogFooter,
 } from "@material-tailwind/react"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { putDeleteDeposit } from "../../../store/deposit/depositThunk"
 
 // eslint-disable-next-line react/prop-types
 export default function DialogForm({ id }) {
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
+	const dispatch = useDispatch()
+	const handleDeleteDeposit = () => {
+		dispatch(putDeleteDeposit(id))
+		setOpen(!open)
+	}
 	return (
 		<>
 			<Button onClick={handleOpen} variant="gradient">
 				{id}
 			</Button>
 			<Dialog open={open} handler={handleOpen}>
-				<DialogHeader>Its a simple dialog.</DialogHeader>
-				<DialogBody divider>
-					The key to more success is to have a lot of pillows. Put it
-					this way, it took me twenty five years to get these plants,
-					twenty five years of blood sweat and tears, and I&apos;m
-					never giving up, I&apos;m just getting started. I&apos;m up
-					to something. Fan luv.
-				</DialogBody>
+				<DialogHeader>BẠN MUỐN XÓA CHỨ.</DialogHeader>
+				<DialogBody divider>Bạn chắc chắn xóa nó chứ</DialogBody>
 				<DialogFooter>
 					<Button
 						variant="text"
@@ -32,14 +33,14 @@ export default function DialogForm({ id }) {
 						onClick={handleOpen}
 						className="mr-1"
 					>
-						<span>Cancel</span>
+						<span>Hủy yêu cầu</span>
 					</Button>
 					<Button
 						variant="gradient"
 						color="green"
-						onClick={handleOpen}
+						onClick={handleDeleteDeposit}
 					>
-						<span>Confirm</span>
+						<span>XÓA</span>
 					</Button>
 				</DialogFooter>
 			</Dialog>

@@ -72,6 +72,7 @@ export async function findDepositSearchModel(data) {
 		inner join CNPM.KHACHHANG KH on PGT.MaKhachHang = KH.id
 		inner join CNPM.LOAITIETKIEM LTK on LTK.id = PGT.LTK
 		where 
+			PGT.TienDu != 0 and
 			TenLoaiTietKiem ${data?.LTK ? " = ?" : stringNull} and
 			HoTenKhachHang ${data?.HoTenKhachHang ? " = ? " : stringNull} and
 			SDT ${data?.SDT ? " = ?" : stringNull} and
@@ -86,7 +87,7 @@ export async function findDepositCustomerModel(CMND) {
 		`select * from KHACHHANG KH
         inner join PHIEUGUITIEN PGT
         on KH.id = PGT.MaKhachHang
-        where KH.CMND = ?`,
+        where KH.CMND = ? and PGT.TienDU != 0`,
 		[CMND]
 	)
 }

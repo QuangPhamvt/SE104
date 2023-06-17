@@ -69,3 +69,14 @@ export const getUpdateDeposit = createAsyncThunk(
 		}
 	}
 )
+// Xoa deposit
+export const putDeleteDeposit = createAsyncThunk(
+	"deposit/putDeleteDeposit",
+	async function (id) {
+		try {
+			return await axiosDeposit.axiosPutDeleteDeposit(id)
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
+)

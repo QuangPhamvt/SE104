@@ -2,9 +2,11 @@ import { mysql } from "./index.js"
 
 export async function findUserModel(username) {
 	return await mysql.query(
-		`select *
-        from NGUOIDUNG 
-        where username = ?`,
+		`select username, password, NGD.TenNhom
+        from NGUOIDUNG ND, NHOMNGUOIDUNG NGD
+        where 
+			username = ? and 
+			NGD.id = ND.MaNhom`,
 		[username]
 	)
 }

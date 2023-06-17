@@ -1,16 +1,20 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import {
 	Typography,
 	Navbar,
-	Card,
-	List,
-	ListItem,
+	Menu,
+	MenuHandler,
+	MenuList,
+	MenuItem,
+	Button,
 } from "@material-tailwind/react"
 import { BsFillPersonFill } from "react-icons/bs"
-import Footer from "./footer"
-import { getLogoutUser } from "../../store/auth/userThunnk"
+import Footer from "../footer"
+import { getLogoutUser } from "../../../store/auth/userThunk"
+import ParameterDialog from "./parameterDialog"
+import CreateUserDialog from "./createUserDialog"
 const array = [
 	{ name: "Phiếu Gửi Tiền", redirect: "deposit" },
 	{ name: "Customer", redirect: "customer" },
@@ -21,21 +25,14 @@ const array = [
 const Navigation = () => {
 	const navigate = useNavigate()
 	let isVerify = false
-	isVerify = useSelector((store) => store.auth.success)
-	const [isShow, setIsShow] = useState(false)
+	let auth = useSelector((store) => store.auth.auth)
+	isVerify = useSelector((store) => store.auth.success.verify)
 	const refOne = useRef(null)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
 		if (!isVerify) return navigate("/")
 	}, [isVerify])
-	useEffect(() => {
-		function closeDropDown(e) {
-			if (!refOne.current.contains(e.target)) setIsShow(false)
-		}
-		document.body.addEventListener("click", closeDropDown)
-		return () => document.body.removeEventListener("click", closeDropDown)
-	}, [])
 	return (
 		<>
 			<Navbar className=" relative mx-auto grid grid-cols-12 z-50 shadow-xl">
@@ -65,24 +62,33 @@ const Navigation = () => {
 					))}
 				</ul>
 				<div className="col-span-1 m-auto relative z-50" ref={refOne}>
-					<button onClick={() => setIsShow((prev) => !prev)}>
-						<BsFillPersonFill className="bg-black text-4xl rounded-full" />
-					</button>
-					{isShow && (
-						<Card className="absolute top-10 -left-24 w-[260px] h-[200px] border-2 border-gray-200 p-4 shadow-2xl shadow-blue-gray-900/5 z-50">
-							<List className="w-52">
-								<ListItem>Profile</ListItem>
-								<ListItem>Settings</ListItem>
-								<ListItem
-									onClick={() => {
-										dispatch(getLogoutUser())
-									}}
-								>
-									Log Out
-								</ListItem>
-							</List>
-						</Card>
-					)}
+					<Menu>
+						<MenuHandler>
+							<Button
+								variant="text"
+								className=" hover:bg-white focus:bg-white rounded-full active:bg-white"
+							>
+								<BsFillPersonFill className="bg-white text-4xl rounded-full h-full w-full" />
+							</Button>
+						</MenuHandler>
+						<MenuList>
+							{auth === "Admin" && (
+								<>
+									<MenuItem>
+										<ParameterDialog name={"Tham So"} />
+									</MenuItem>
+									<MenuItem>
+										<CreateUserDialog
+											name={"Tạo Tài Khoản"}
+										/>
+									</MenuItem>
+								</>
+							)}
+							<MenuItem onClick={() => dispatch(getLogoutUser())}>
+								Log Out
+							</MenuItem>
+						</MenuList>
+					</Menu>
 				</div>
 			</Navbar>
 			<Outlet />

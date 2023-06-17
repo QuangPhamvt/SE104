@@ -13,6 +13,8 @@ const axiosDeposit = {
 		axiosClient.post("deposit/create", { CMND, TienGoc, LTK }),
 	//update lại dữ liệu
 	axiosGetUpdateDeposit: () => axiosClient.get("deposit/update"),
+	//delele phieu cua nguoi su dung
+	axiosPutDeleteDeposit: (id) => axiosClient.put(`deposit/drawout/${id}`),
 }
 
 export default axiosDeposit

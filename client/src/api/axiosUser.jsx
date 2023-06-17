@@ -1,13 +1,14 @@
 import axiosClient from "./axiosClient"
 
 const axiosUser = {
-	axiosLogin: (data) =>
+	axiosPostLogin: (data) =>
 		axiosClient.post("/user/login", {
 			username: data.username,
 			password: data.password,
 		}),
-	axiosVerify: () => axiosClient.get("/user"),
-	axiosLogout: () => axiosClient.get("/user/logout"),
+	axiosGetVerify: () => axiosClient.get("/user"),
+	axiosGetLogout: () => axiosClient.get("/user/logout"),
+	axiosPostCreateUser: (data) => axiosClient.post("/user/create", data),
 }
 
 export default axiosUser

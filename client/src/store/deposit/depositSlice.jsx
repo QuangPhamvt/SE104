@@ -4,6 +4,7 @@ import {
 	getAllDeposit,
 	postCreateDeposit,
 	postSearchDeposit,
+	putDeleteDeposit,
 } from "./depositThunk"
 
 const initialState = {
@@ -12,11 +13,13 @@ const initialState = {
 		getAllCustomerDeposit: false,
 		postCreateDeposit: false,
 		postSearchDeposit: false,
+		putDeleteDeposit: false,
 	},
 	message: {
 		getAllCustomerDeposit: "",
 		postCreateDeposit: "",
 		postSearchDeposit: "",
+		putDeleteDeposit: "",
 	},
 }
 const depositSlice = createSlice({
@@ -29,7 +32,7 @@ const depositSlice = createSlice({
 			console.log(`deposit/getAllDeposit: ${action.payload.message}`)
 			state.data = action.payload.data
 			state.message = action.payload.message
-			state.success = true
+			state.success = action.payload.success
 		})
 		// Lấy phiếu theo search
 		builder.addCase(postSearchDeposit.fulfilled, (state, action) => {
@@ -52,6 +55,12 @@ const depositSlice = createSlice({
 			console.log(`deposit/postCreateDeposit: ${action.payload.message}`)
 			state.success.postCreateDeposit = action.payload.success
 			state.message.postCreateDeposit = action.payload.message
+		})
+		// Xóa Một Phiếu
+		builder.addCase(putDeleteDeposit.fulfilled, (state, action) => {
+			console.log(`deposit/putDeleteDeposit: ${action.payload.message}`)
+			state.success.putDeleteDeposit = action.payload.success
+			state.message.putDeleteDeposit = action.payload.message
 		})
 	},
 })

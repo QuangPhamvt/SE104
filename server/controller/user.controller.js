@@ -7,6 +7,7 @@ export async function getToken(req, res, next) {
 	try {
 		return res.status(200).json({
 			success: true,
+			auth: req.body.user.auth,
 			message: "nice!",
 		})
 	} catch (error) {
@@ -40,19 +41,19 @@ export async function loginUser(req, res, next) {
 	const { username, password } = req.body
 	try {
 		const [[data]] = await findUserModel(username)
-		console.log(data.id)
 		if (!data || password != data.password)
 			return res.status(401).json({
 				success: false,
 				message: "ĐĂng nhập sai thông tin",
 			})
-		const token = jwt.sign({ username, password }, "CNPM")
+		const token = jwt.sign({ username, auth: data.TenNhom }, "CNPM")
 		res.cookie("authToken", token, {
 			maxAge: 360 * 24 * 60 * 60 * 100,
 			httpOnly: true,
 		})
 		return res.status(200).json({
 			success: true,
+			auth: data.TenNhom,
 			message: "Đăng nhập thành công ",
 		})
 	} catch (error) {
@@ -63,6 +64,7 @@ export async function loginUser(req, res, next) {
 export async function logoutUser(req, res, next) {
 	res.clearCookie("authToken").status(200).json({
 		success: false,
+		auth: "",
 		message: "not having token",
 	})
 }
