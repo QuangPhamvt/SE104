@@ -72,21 +72,24 @@ export async function findDepositSearchModel(data) {
 		inner join CNPM.KHACHHANG KH on PGT.MaKhachHang = KH.id
 		inner join CNPM.LOAITIETKIEM LTK on LTK.id = PGT.LTK
 		where 
-			PGT.TienDu != 0 and
 			TenLoaiTietKiem ${data?.LTK ? " = ?" : stringNull} and
 			HoTenKhachHang ${data?.HoTenKhachHang ? " = ? " : stringNull} and
 			SDT ${data?.SDT ? " = ?" : stringNull} and
 			CMND ${data?.CMND ? " = ?" : stringNull} and
-			NgayMoSo ${data?.NgayMoSo ? " = ?" : stringNull} 
+			NgayMoSo ${data?.NgayMoSo ? " = ?" : stringNull} and
+			TienDu ${data?.Check ? stringNull : " != 0"}
 		`
 	return mysql.query(query, array)
 }
 
 export async function findDepositCustomerModel(CMND) {
 	return mysql.query(
-		`select * from KHACHHANG KH
-        inner join PHIEUGUITIEN PGT
-        on KH.id = PGT.MaKhachHang
+		`select  
+			PGT.id, LTK.TenLoaiTietKiem, PGT.LaiSuat, 
+			NgayMoSo, NgayDongSo, NgayDaoHan, TienDu, TienGoc
+		FROM PHIEUGUITIEN PGT 
+        inner join KHACHHANG KH on KH.id = PGT.MaKhachHang
+		inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
         where KH.CMND = ? and PGT.TienDU != 0`,
 		[CMND]
 	)

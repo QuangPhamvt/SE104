@@ -7,10 +7,10 @@ import {
 	DialogHeader,
 	DialogFooter,
 } from "@material-tailwind/react"
-import { useDispatch, useSelector } from "react-redux"
-import { Fragment, useState } from "react"
+import { useState } from "react"
 import { postCreateDeposit } from "../../../store/deposit/depositThunk"
 import useForm from "../../../hooks/useForm"
+import useStore from "../../../hooks/useStore"
 
 const array = ["Không Kỳ Hạn", "3 Tháng", "6 Tháng"]
 const array_form = [
@@ -22,14 +22,12 @@ const array_form = [
 	},
 ]
 function DepositForm() {
-	const dispatch = useDispatch()
-	const isCreateDeposit = useSelector(
+	const [dispatch, store] = useStore(
 		(store) => store.deposit.success.postCreateDeposit
 	)
 	const [open, setOpen] = useState(false)
-	const handleOpen = () => {
-		setOpen(!open)
-	}
+	const handleOpen = () => setOpen(!open)
+
 	const [input, handleChange, handleSubmit, reset] = useForm(
 		{
 			LTK: "",
@@ -42,7 +40,6 @@ function DepositForm() {
 	)
 	return (
 		<form
-			action=""
 			className=" border-2 h-[400px] w-[800px] flex flex-col gap-12 p-11 rounded-3xl bg-[#C1EAF2] hover:shadow-lg"
 			onSubmit={handleSubmit}
 			id="form"
@@ -67,10 +64,7 @@ function DepositForm() {
 			{array_form.map((state, index) => {
 				return (
 					<div key={index} className="w-full flex  items-center">
-						<label
-							htmlFor="Customer"
-							className=" w-60 text-xl font-bold"
-						>
+						<label className=" w-60 text-xl font-bold">
 							{state.label}
 						</label>
 						<div>
@@ -96,40 +90,36 @@ function DepositForm() {
 				>
 					HỦY
 				</Button>
-				<Fragment>
-					<Button
-						variant="gradient"
-						type="submit"
-						onClick={handleOpen}
-					>
-						XÁC NHẬN
-					</Button>
-					<Dialog
-						open={open}
-						handler={handleOpen}
-						className=" duration-0 ease-linear animate-none"
-					>
-						<DialogHeader>Xác Nhận</DialogHeader>
-						{isCreateDeposit ? (
-							<DialogBody>Tạo thành công</DialogBody>
-						) : (
-							<DialogBody>Không tồn tại khách hàng</DialogBody>
-						)}
-						<DialogFooter>
-							<Button
-								variant="gradient"
-								color="blue"
-								onClick={() => {
-									handleOpen()
-									reset()
-									document.getElementById("form").reset()
-								}}
-							>
-								<span>OK</span>
-							</Button>
-						</DialogFooter>
-					</Dialog>
-				</Fragment>
+				<Button variant="gradient" type="submit" onClick={handleOpen}>
+					XÁC NHẬN
+				</Button>
+				<Dialog
+					open={open}
+					handler={handleOpen}
+					className=" duration-0 ease-linear animate-none"
+				>
+					<DialogHeader>Xác Nhận</DialogHeader>
+					{store ? (
+						<DialogBody>Tạo thành công</DialogBody>
+					) : (
+						<DialogBody className=" text-red-300">
+							Không tồn tại khách hàng hoặc nhập sai số tiền
+						</DialogBody>
+					)}
+					<DialogFooter>
+						<Button
+							variant="gradient"
+							color="blue"
+							onClick={() => {
+								handleOpen()
+								reset()
+								document.getElementById("form").reset()
+							}}
+						>
+							<span>OK</span>
+						</Button>
+					</DialogFooter>
+				</Dialog>
 			</div>
 		</form>
 	)

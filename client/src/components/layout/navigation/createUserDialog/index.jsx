@@ -3,18 +3,24 @@ import {
 	Card,
 	CardBody,
 	Dialog,
+	DialogBody,
+	DialogFooter,
+	DialogHeader,
 	Input,
 	Typography,
 } from "@material-tailwind/react"
 
 import { Fragment, useState } from "react"
-import useForm from "../../../hooks/useForm"
-import { useDispatch } from "react-redux"
-import { postCreateUser } from "../../../store/auth/userThunk"
+import useForm from "../../../../hooks/useForm"
+import { useDispatch, useSelector } from "react-redux"
+import { postCreateUser } from "../../../../store/auth/userThunk"
 function CreateUserDialog({ name }) {
 	const dispatch = useDispatch()
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen((cur) => !cur)
+	const success = useSelector((store) => store.auth.success.postCreateUser)
+	const message = useSelector((store) => store.auth.message.postCreateUser)
+
 	const [input, handleChange, handleSubmit] = useForm(
 		{
 			username: "",
@@ -83,9 +89,22 @@ function CreateUserDialog({ name }) {
 									onChange={handleChange}
 								/>
 							</div>
-							<Button className="mt-6" fullWidth type="submit">
+							<Button
+								className={`mt-6  ${
+									success ? "" : " border-red-200 border-4"
+								}`}
+								fullWidth
+								type="submit"
+							>
 								Register
 							</Button>
+							{success ? (
+								<span className="text-blue-300">
+									Tạo Thành Công
+								</span>
+							) : (
+								<span className="text-red-300">Thất bại</span>
+							)}
 						</form>
 					</CardBody>
 				</Card>

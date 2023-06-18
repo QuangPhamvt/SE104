@@ -8,7 +8,8 @@ export const postLoginUser = createAsyncThunk(
 		try {
 			return await axiosPostLogin(data)
 		} catch (error) {
-			console.log(error.response)
+			console.log(error.response.data)
+			return error.response.data
 		}
 	}
 )
@@ -42,6 +43,7 @@ export const postCreateUser = createAsyncThunk(
 			return await axiosPostCreateUser(data)
 		} catch (error) {
 			console.log(error.response)
+			return error.response.data
 		}
 	}
 )

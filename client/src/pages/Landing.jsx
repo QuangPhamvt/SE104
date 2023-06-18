@@ -4,12 +4,26 @@ import { useDispatch, useSelector } from "react-redux"
 import { getVerifyUser, postLoginUser } from "../store/auth/userThunk"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { Button, Input, Typography } from "@material-tailwind/react"
 
+const array = [
+	{
+		type: "text",
+		name: "username",
+		label: "USERNAME",
+	},
+	{
+		type: "password",
+		name: "password",
+		label: "PASSWORD",
+	},
+]
 function Landing() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	let isVerify = false
 	isVerify = useSelector((store) => store.auth.success.verify)
+	const isError = useSelector((store) => store.auth.message.postLoginUser)
 	const [input, handleChange, handleSubmit] = useForm(
 		{
 			username: "",
@@ -44,35 +58,33 @@ function Landing() {
 						<form
 							onSubmit={handleSubmit}
 							action=""
-							className=" m-14 flex flex-col gap-9"
+							className="m-14 mb-6 flex flex-col gap-4"
 						>
-							<input
-								onChange={handleChange}
-								type="text"
-								name="username"
-								value={input.username}
-								className=" h-12 pl-6 rounded-lg text-xl"
-								placeholder="Tên đăng nhập"
-							/>
-							<input
-								onChange={handleChange}
-								type="password"
-								name="password"
-								value={input.password}
-								className=" h-12 pl-6 rounded-lg text-xl"
-								placeholder="password"
-							/>
-							<button
+							{array.map((state, index) => (
+								<Input
+									key={index}
+									onChange={handleChange}
+									type={state.type}
+									name={state.name}
+									value={input[state.name]}
+									className="bg-white text-2xl h-14"
+									label={state.label}
+								/>
+							))}
+							<Button
 								type="submit"
-								className=" bg-primary mx-16 h-14 rounded-2xl text-2xl text-white font-bold"
+								className=" mx-16 h-14 rounded-2xl text-2xl text-white font-bold"
 							>
 								ĐĂNG NHẬP
-							</button>
+							</Button>
+							{isError === "Đăng nhập sai thông tin" && (
+								<Typography color="red">{isError}</Typography>
+							)}
 						</form>
 					</div>
 				</div>
 			</div>
-			<Footer></Footer>
+			<Footer />
 		</>
 	)
 }

@@ -20,7 +20,6 @@ export async function createUser(req, res, next) {
 	const { username, password, TenNhom } = req.body
 	try {
 		const [isExists] = await findUserModel(username)
-		console.log(isExists)
 		if (isExists === [] || !password)
 			return res.status(400).json({
 				success: false,
@@ -44,7 +43,8 @@ export async function loginUser(req, res, next) {
 		if (!data || password != data.password)
 			return res.status(401).json({
 				success: false,
-				message: "ĐĂng nhập sai thông tin",
+				auth: "",
+				message: "Đăng nhập sai thông tin",
 			})
 		const token = jwt.sign({ username, auth: data.TenNhom }, "CNPM")
 		res.cookie("authToken", token, {

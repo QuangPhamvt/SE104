@@ -6,6 +6,7 @@ import {
 	Button,
 	Input,
 	Radio,
+	Checkbox,
 } from "@material-tailwind/react"
 import { useDispatch } from "react-redux"
 import { postSearchDeposit } from "../../../store/deposit/depositThunk"
@@ -27,6 +28,7 @@ function SearchForm() {
 			SDT: "",
 			CMND: "",
 			NgayMoSo: "",
+			Check: false,
 		},
 		(object) => {
 			console.log(object)
@@ -57,6 +59,19 @@ function SearchForm() {
 									label={state}
 								/>
 							))}
+						</div>
+					</div>
+					<div className="flex flex-row justify-start gap-16">
+						<label className=" w-40 text-justify pt-2">
+							Phiếu đã rút
+						</label>
+						<div className="w-[600px] flex flex-row gap-x-10">
+							<Checkbox
+								name="Check"
+								label="chon"
+								onClick={handleChange}
+								value={!input.Check}
+							/>
 						</div>
 					</div>
 					{array_form.map((state, index) => {

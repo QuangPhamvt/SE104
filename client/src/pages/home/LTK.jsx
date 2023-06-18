@@ -8,7 +8,7 @@ import { getCustomer } from "../../store/customer/customerThunk"
 function LTKCard() {
 	const dispatch = useDispatch()
 	const [input, handleChange, handleSubmit] = useForm(
-		{ CMND: "" },
+		{ CMND: "0" },
 		(input) => {
 			dispatch(getAllCustomerDeposit(input.CMND))
 			dispatch(getCustomer(input.CMND))
@@ -33,7 +33,7 @@ function LTKCard() {
 					/>
 				</form>
 				<div>
-					<Table head={["id", "TienGoc", "NgayDaoHan", ""]} />
+					<Table head={["STT", "Tiền Gốc", "Ngày Đáo Hạn", ""]} />
 				</div>
 			</div>
 		</div>

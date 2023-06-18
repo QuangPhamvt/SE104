@@ -18,8 +18,8 @@ router.use("/deposit", phieuguitienRouter)
 router.use("/customer", khachhangRouter)
 router.use("/report", baocaoRouter)
 router.use("/user", userRouter)
-router.use("/parameter", thamsoRouter)
 router.use("/LTK", LTKRouter)
 router.use("/test", testRouter)
+router.use("/parameter", thamsoRouter)
 
 export default router

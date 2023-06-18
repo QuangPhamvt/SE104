@@ -56,7 +56,6 @@ export async function findDepositCustomerController(req, res, next) {
 }
 // Tìm phiếu theo search
 export async function findDepositSearchController(req, res, next) {
-	console.log(req.body)
 	try {
 		const [data] = await findDepositSearchModel(req.body)
 		return res.status(200).json({

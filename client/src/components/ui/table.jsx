@@ -1,34 +1,6 @@
 import { Card, Typography } from "@material-tailwind/react"
 import { useSelector } from "react-redux"
 
-// const TABLE_ROWS = [
-// 	{
-// 		name: "John Michael",
-// 		job: "Manager",
-// 		date: "23/04/18",
-// 	},
-// 	{
-// 		name: "Alexa Liras",
-// 		job: "Developer",
-// 		date: "23/04/18",
-// 	},
-// 	{
-// 		name: "Laurent Perrier",
-// 		job: "Executive",
-// 		date: "19/09/17",
-// 	},
-// 	{
-// 		name: "Michael Levi",
-// 		job: "Developer",
-// 		date: "24/12/08",
-// 	},
-// 	{
-// 		name: "Richard Gran",
-// 		job: "Manager",
-// 		date: "04/10/21",
-// 	},
-// ]
-
 export default function Table(props) {
 	const data = useSelector((store) => store.deposit.data)
 	// eslint-disable-next-line react/prop-types
@@ -63,7 +35,7 @@ export default function Table(props) {
 							: "p-4 border-b border-blue-gray-50"
 
 						const utcDate = new Date(NgayDaoHan)
-						const date = utcDate.getUTCDate()
+						const date = utcDate.getUTCDate() + 1
 						const month =
 							utcDate.getUTCMonth() < 12
 								? utcDate.getUTCMonth() + 1

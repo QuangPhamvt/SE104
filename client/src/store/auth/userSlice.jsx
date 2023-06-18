@@ -8,7 +8,7 @@ import {
 
 const initialState = {
 	success: {
-		verify: false,
+		verify: "",
 		postCreateUser: false,
 	},
 	auth: "",
@@ -16,7 +16,7 @@ const initialState = {
 		postLoginUser: "",
 		getVerifyUser: "",
 		getLogoutUser: "",
-		postCreateUser: "",
+		postCreateUser: undefined,
 	},
 }
 const userSlice = createSlice({

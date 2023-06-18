@@ -23,11 +23,17 @@ function DepositCard() {
 			</CardHeader>
 			<CardBody className="flex flex-col gap-4 pt-2 w-full">
 				<Typography className="font-bold">
-					Họ Tên Khách Hàng: {data?.HoTenKhachHang}
+					Họ Tên Khách Hàng : {data?.HoTenKhachHang}
 				</Typography>
-				<Typography>Ngày tháng năm sinh: {day()}</Typography>
-				<Typography>Chứng Minh Nhân Dân: {data?.CMND} </Typography>
-				<Typography>Địa Chỉ: {data?.DiaChi}</Typography>
+				<Typography className="font-bold">
+					Ngày tháng năm sinh : {day()}
+				</Typography>
+				<Typography className="font-bold">
+					Chứng Minh Nhân Dân : {data?.CMND}{" "}
+				</Typography>
+				<Typography className="font-bold">
+					Địa Chỉ : {data?.DiaChi}
+				</Typography>
 			</CardBody>
 		</Card>
 	)

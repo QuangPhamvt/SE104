@@ -7,14 +7,16 @@ import {
 	Input,
 	Radio,
 } from "@material-tailwind/react"
-import { useDispatch, useSelector } from "react-redux"
 import useForm from "../../../hooks/useForm"
 import { createCustomer } from "../../../store/customer/customerThunk"
 import { useState, Fragment } from "react"
+import useStore from "../../../hooks/useStore"
 
 const array = ["male", "female"]
 const CustomerCard = () => {
-	const dispacth = useDispatch()
+	const [dispatch, store] = useStore(
+		(store) => store.customer.success.createCustomer
+	)
 	const [open, setOpen] = useState(false)
 	const [input, handleChange, handleSubmit, reset] = useForm(
 		{
@@ -27,15 +29,12 @@ const CustomerCard = () => {
 			GioiTinh: "",
 		},
 		(input) => {
-			dispacth(createCustomer(input))
+			dispatch(createCustomer(input))
 		}
 	)
 	const handleOpen = () => {
 		setOpen(!open)
 	}
-	const isCreateCustomer = useSelector(
-		(store) => store.customer.success.createCustomer
-	)
 	const arrayCustomer = [
 		{ label: "Địa chỉ", type: "text", name: "DiaChi" },
 		{ label: "Tuổi", type: "number", name: "Tuoi" },
@@ -139,10 +138,10 @@ const CustomerCard = () => {
 							className=" duration-0 ease-linear  animate-none"
 						>
 							<DialogHeader>Xác Nhận</DialogHeader>
-							{isCreateCustomer ? (
+							{store ? (
 								<DialogBody>Tạo thành công</DialogBody>
 							) : (
-								<DialogBody>
+								<DialogBody className="text-red-300">
 									Có lỗi xảy ra có thể nhập sai hoặc trùng tên
 								</DialogBody>
 							)}
