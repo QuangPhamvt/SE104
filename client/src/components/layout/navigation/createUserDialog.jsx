@@ -2,22 +2,38 @@ import {
 	Button,
 	Card,
 	CardBody,
-	CardFooter,
-	CardHeader,
 	Dialog,
 	Input,
 	Typography,
 } from "@material-tailwind/react"
 
 import { Fragment, useState } from "react"
-
+import useForm from "../../../hooks/useForm"
+import { useDispatch } from "react-redux"
+import { postCreateUser } from "../../../store/auth/userThunk"
 function CreateUserDialog({ name }) {
+	const dispatch = useDispatch()
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen((cur) => !cur)
+	const [input, handleChange, handleSubmit] = useForm(
+		{
+			username: "",
+			password: "",
+			TenNhom: "",
+		},
+		(object) => {
+			console.log(object)
+			dispatch(postCreateUser(object))
+		}
+	)
 
 	return (
 		<Fragment>
-			<Typography onClick={handleOpen} variant="h6" className="w-full">
+			<Typography
+				onClick={handleOpen}
+				variant="h6"
+				className="w-full h-full p-2"
+			>
 				{name}
 			</Typography>
 			<Dialog
@@ -26,42 +42,52 @@ function CreateUserDialog({ name }) {
 				handler={handleOpen}
 				className="bg-transparent shadow-none"
 			>
-				<Card className="mx-auto w-full max-w-[24rem]">
-					<CardHeader
-						variant="gradient"
-						className="mb-4 grid h-28 place-items-center bg-blue-100"
-					>
-						<Typography variant="h3" color="white">
-							Tạo Tài Khoản
-						</Typography>
-					</CardHeader>
-					<CardBody className="flex flex-col gap-4">
-						<Input label="Email" size="lg" />
-						<Input label="Password" size="lg" />
+				<Card className="mx-auto max-w-[24rem] h-[400px] flex flex-col items-center">
+					<Typography variant="h3" color="blue-gray" className="mt-4">
+						Sign Up
+					</Typography>
+					<CardBody>
+						<form
+							className="mt-8 mb-2 w-80"
+							onSubmit={handleSubmit}
+							id="form"
+							onKeyDown={(event) => {
+								if (event.key === "Tab") {
+									event.stopPropagation()
+									console.log("Tab")
+								}
+							}}
+						>
+							<div className="mb-4 flex flex-col gap-6">
+								<Input
+									size="lg"
+									label="Username"
+									name={"username"}
+									value={input.username || ""}
+									onChange={handleChange}
+								/>
+								<Input
+									type="password"
+									size="lg"
+									label="Password"
+									name={"password"}
+									value={input.password || ""}
+									onChange={handleChange}
+								/>
+								<Input
+									type="text"
+									size="lg"
+									label="Tên Nhóm"
+									name={"TenNhom"}
+									value={input.TenNhom || ""}
+									onChange={handleChange}
+								/>
+							</div>
+							<Button className="mt-6" fullWidth type="submit">
+								Register
+							</Button>
+						</form>
 					</CardBody>
-					<CardFooter className="pt-0">
-						<Button
-							variant="gradient"
-							onClick={handleOpen}
-							fullWidth
-						>
-							Sign In
-						</Button>
-						<Typography
-							variant="small"
-							className="mt-6 flex justify-center"
-						>
-							Don&apos;t have an account?
-							<Typography
-								variant="small"
-								color="blue"
-								className="ml-1 font-bold"
-								onClick={handleOpen}
-							>
-								Sign up
-							</Typography>
-						</Typography>
-					</CardFooter>
 				</Card>
 			</Dialog>
 		</Fragment>

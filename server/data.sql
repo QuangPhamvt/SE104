@@ -48,12 +48,13 @@ INSERT INTO `CHUCNANG` VALUES(9, 'get user', 'http://localhost:5000/api/v1/user'
 INSERT INTO `CHUCNANG` VALUES(10, 'create user', 'http://localhost:5000/api/v1/user/create', 'POST');
 INSERT INTO `CHUCNANG` VALUES(11, 'login user', 'http://localhost:5000/api/v1/user/login', 'POST');
 INSERT INTO `CHUCNANG` VALUES(12, 'logout user', 'http://localhost:5000/api/v1/user/logout', 'GET');
--- -- THAMSO
+-- THAMSO
 INSERT INTO `CHUCNANG` VALUES(13, 'update THAMSO', 'http://localhost:5000/api/v1/parameter/STTT', 'PUT');
 -- INSERT INTO `CHUCNANG` VALUES(18, 'read THAMSO', 'THAMSO', 'READ');
 -- INSERT INTO `CHUCNANG` VALUES(19, 'update THAMSO', 'THAMSO', 'UPDATE');
 -- INSERT INTO `CHUCNANG` VALUES(20, 'delete THAMSO', 'THAMSO', 'DELETE');
-
+--  Ltk
+INSERT INTO `CHUCNANG` VALUES(14, 'update LoaiTietKiem', "http://localhost:5000/api/v1/LTK/update", "PUT");
 
 -- INSERT PHANQUYEN
 INSERT INTO `PHANQUYEN` VALUES (1,1);
@@ -69,6 +70,7 @@ INSERT INTO `PHANQUYEN` VALUES (1,10);
 INSERT INTO `PHANQUYEN` VALUES (1,11);
 INSERT INTO `PHANQUYEN` VALUES (1,12);
 INSERT INTO `PHANQUYEN` VALUES (1,13);
+INSERT INTO `PHANQUYEN` VALUES (1,14);
 INSERT INTO `PHANQUYEN` VALUES (2,1);
 INSERT INTO `PHANQUYEN` VALUES (2,2);
 INSERT INTO `PHANQUYEN` VALUES (2,3);

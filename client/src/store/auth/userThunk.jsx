@@ -8,7 +8,7 @@ export const postLoginUser = createAsyncThunk(
 		try {
 			return await axiosPostLogin(data)
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.response)
 		}
 	}
 )
@@ -19,7 +19,7 @@ export const getVerifyUser = createAsyncThunk(
 		try {
 			return await axiosGetVerify()
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.response)
 		}
 	}
 )
@@ -30,7 +30,7 @@ export const getLogoutUser = createAsyncThunk(
 		try {
 			return await axiosGetLogout()
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.response)
 		}
 	}
 )
@@ -41,7 +41,7 @@ export const postCreateUser = createAsyncThunk(
 		try {
 			return await axiosPostCreateUser(data)
 		} catch (error) {
-			console.log(error.message)
+			console.log(error.response)
 		}
 	}
 )

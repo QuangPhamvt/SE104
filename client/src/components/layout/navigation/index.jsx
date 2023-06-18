@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import {
 	Typography,
 	Navbar,
@@ -24,10 +24,10 @@ const array = [
 
 const Navigation = () => {
 	const navigate = useNavigate()
+	const [openMenu, setOpenMenu] = useState(false)
 	let isVerify = false
 	let auth = useSelector((store) => store.auth.auth)
 	isVerify = useSelector((store) => store.auth.success.verify)
-	const refOne = useRef(null)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -35,7 +35,7 @@ const Navigation = () => {
 	}, [isVerify])
 	return (
 		<>
-			<Navbar className=" relative mx-auto grid grid-cols-12 z-50 shadow-xl">
+			<Navbar className=" relative mx-auto grid grid-cols-12 z-0 shadow-xl">
 				<div className="text-black col-span-3 text-center flex flex-row items-center">
 					<span className="text-4xl font-bold font-dancing italic text-primary">
 						Mami Nanami
@@ -49,6 +49,7 @@ const Navigation = () => {
 							className={({ isActive }) =>
 								isActive ? `text-[#1c93e8]` : "text-black "
 							}
+							tabIndex={0}
 						>
 							<li
 								key={index}
@@ -61,8 +62,8 @@ const Navigation = () => {
 						</NavLink>
 					))}
 				</ul>
-				<div className="col-span-1 m-auto relative z-50" ref={refOne}>
-					<Menu>
+				<div className="col-span-1 m-auto relative">
+					<Menu open={openMenu} handler={setOpenMenu}>
 						<MenuHandler>
 							<Button
 								variant="text"
@@ -74,10 +75,10 @@ const Navigation = () => {
 						<MenuList>
 							{auth === "Admin" && (
 								<>
-									<MenuItem>
-										<ParameterDialog name={"Tham So"} />
+									<MenuItem className="p-0 mt-1">
+										<ParameterDialog name={"Tham Số"} />
 									</MenuItem>
-									<MenuItem>
+									<MenuItem className="p-0 mt-1">
 										<CreateUserDialog
 											name={"Tạo Tài Khoản"}
 										/>
