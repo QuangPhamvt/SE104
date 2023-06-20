@@ -15,7 +15,17 @@ export const getAllDeposit = createAsyncThunk(
 		}
 	}
 )
-
+// hiển thị thông tin của một phiếu
+export const getIDDeposit = createAsyncThunk(
+	"deposit/getIDDeposit",
+	async function (data) {
+		try {
+			return await axiosDeposit.axiosGetIDDeposit(data)
+		} catch (error) {
+			return error.response.data
+		}
+	}
+)
 //hiển thị tất cả các phiếu của khách hàng
 export const getAllCustomerDeposit = createAsyncThunk(
 	"deposit/getAllCustomerDeposit",

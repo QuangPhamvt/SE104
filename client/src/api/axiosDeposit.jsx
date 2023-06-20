@@ -3,6 +3,8 @@ import axiosClient from "./axiosClient"
 const axiosDeposit = {
 	//Lấy search
 	axiosPostSearchDeposit: (data) => axiosClient.post("deposit/search", data),
+	// Lấy dữ liệu phiếu
+	axiosGetIDDeposit: (id) => axiosClient.get(`deposit/id/${id}`),
 	//Lấy tất cả danh sách
 	axiosGetAllDeposit: ({ page, limit }) =>
 		axiosClient.get("deposit", { params: { page, limit } }),

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import {
 	getAllCustomerDeposit,
 	getAllDeposit,
+	getIDDeposit,
 	postCreateDeposit,
 	postSearchDeposit,
 	putDeleteDeposit,
@@ -11,24 +12,33 @@ const initialState = {
 	data: {
 		getAllCustomerDeposit: [],
 		postSearchDeposit: [],
+		getIDDeposit: [],
 	},
 	success: {
 		getAllCustomerDeposit: false,
 		postCreateDeposit: false,
 		postSearchDeposit: false,
 		putDeleteDeposit: false,
+		getIDDeposit: false,
 	},
 	message: {
 		getAllCustomerDeposit: "",
 		postCreateDeposit: "",
 		postSearchDeposit: "",
 		putDeleteDeposit: "",
+		getIDDeposit: "",
 	},
 }
 const depositSlice = createSlice({
 	name: "deposit",
 	initialState,
-	reducers: {},
+	reducers: {
+		resetPostSearchDeposit(state) {
+			state.data.postSearchDeposit = []
+			state.success.postSearchDeposit = false
+			state.message.postSearchDeposit = ""
+		},
+	},
 	extraReducers: (builder) => {
 		// Lấy tất cả các phiếu
 		builder.addCase(getAllDeposit.fulfilled, (state, action) => {
@@ -36,6 +46,13 @@ const depositSlice = createSlice({
 			state.data = action.payload.data
 			state.message = action.payload.message
 			state.success = action.payload.success
+		})
+		// Lấy thông tin của một phiếu
+		builder.addCase(getIDDeposit.fulfilled, (state, action) => {
+			console.log(`deposit/getIDDeposit:  ${action.payload.message}`)
+			state.data.getIDDeposit = action.payload.data
+			state.success.getIDDeposit = action.payload.success
+			state.message.getIDDeposit = action.payload.message
 		})
 		// Lấy phiếu theo search
 		builder.addCase(postSearchDeposit.fulfilled, (state, action) => {
@@ -68,4 +85,5 @@ const depositSlice = createSlice({
 	},
 })
 const depositReducer = depositSlice.reducer
+export const { resetPostSearchDeposit } = depositSlice.actions
 export default depositReducer

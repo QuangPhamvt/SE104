@@ -4,28 +4,60 @@ import {
 	DialogHeader,
 	DialogBody,
 	DialogFooter,
+	Typography,
 } from "@material-tailwind/react"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { putDeleteDeposit } from "../../../store/deposit/depositThunk"
+import {
+	getIDDeposit,
+	putDeleteDeposit,
+} from "../../../store/deposit/depositThunk"
+import useStore from "../../../hooks/useStore"
 
 // eslint-disable-next-line react/prop-types
 export default function DialogForm({ id }) {
+	console.log(id)
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
-	const dispatch = useDispatch()
+	const [dispatch, store] = useStore(
+		(store) => store.deposit.data.getIDDeposit
+	)
+
+	const handle = () => {
+		dispatch(getIDDeposit(id))
+	}
 	const handleDeleteDeposit = () => {
 		dispatch(putDeleteDeposit(id))
 		setOpen(!open)
 	}
 	return (
 		<>
-			<Button onClick={handleOpen} variant="gradient">
+			<Button
+				onClick={() => {
+					handle()
+					handleOpen()
+				}}
+				variant="gradient"
+				className="h-10"
+			>
 				{id}
 			</Button>
 			<Dialog open={open} handler={handleOpen}>
-				<DialogHeader>"Rút Tiền"</DialogHeader>
-				<DialogBody divider>Bạn chắc chắn muốn rút chứ</DialogBody>
+				<DialogHeader>Rút Tiền</DialogHeader>
+				<DialogBody divider className="grid grid-cols-2 ml-8 ">
+					<Typography variant="h6">ID: {store[0]?.id}</Typography>
+					<Typography variant="h6">
+						CMND/CCCD: {store[0]?.CMND}
+					</Typography>
+					<Typography variant="h6">
+						Họ Tên Khách Hàng: {store[0]?.HoTenKhachHang}
+					</Typography>
+					<Typography variant="h6">
+						Loại Tiết Kiệm: {store[0]?.TenLoaiTietKiem}
+					</Typography>
+					<Typography variant="h6">
+						Tiền Dư: {parseInt(store[0]?.TienDu)}
+					</Typography>
+				</DialogBody>
 				<DialogFooter>
 					<Button
 						variant="text"
@@ -40,7 +72,7 @@ export default function DialogForm({ id }) {
 						color="green"
 						onClick={handleDeleteDeposit}
 					>
-						<span>XÓA</span>
+						<span>Rút Tiền</span>
 					</Button>
 				</DialogFooter>
 			</Dialog>

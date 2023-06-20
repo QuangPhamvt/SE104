@@ -17,9 +17,9 @@ import ParameterDialog from "./parameterDialog"
 import CreateUserDialog from "./createUserDialog"
 const array = [
 	{ name: "Phiếu Gửi Tiền", redirect: "deposit" },
-	{ name: "Customer", redirect: "customer" },
-	{ name: "Report", redirect: "report" },
-	{ name: "Search", redirect: "search" },
+	{ name: "Khách Hàng", redirect: "customer" },
+	{ name: "Báo Cáo", redirect: "report" },
+	{ name: "Tìm Kiếm", redirect: "search" },
 ]
 
 const Navigation = () => {
@@ -36,10 +36,13 @@ const Navigation = () => {
 	return (
 		<>
 			<Navbar className=" relative mx-auto grid grid-cols-12 z-0 shadow-xl">
-				<div className="text-black col-span-3 text-center flex flex-row items-center">
+				<div className="text-black col-span-3 text-center flex flex-row items-center h-16">
 					<span className="text-4xl font-bold font-dancing italic text-primary">
 						Mami Nanami
 					</span>
+					{auth === "Admin" && (
+						<span className="mt-12 ml-2 font-dancing ">Admin</span>
+					)}
 				</div>
 				<ul className="flex flex-row justify-end col-span-8 items-center">
 					{array.map((state, index) => (

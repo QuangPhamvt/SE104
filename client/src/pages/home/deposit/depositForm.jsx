@@ -39,12 +39,12 @@ function DepositForm() {
 	)
 	return (
 		<form
-			className=" border-2 h-[400px] w-[800px] flex flex-col gap-12 p-11 rounded-3xl bg-[#C1EAF2] hover:shadow-lg"
+			className=" border-2 h-[360px] w-[800px] flex flex-col gap-8 p-11 rounded-3xl bg-[#C1EAF2] hover:shadow-lg"
 			onSubmit={handleSubmit}
 			id="form"
 		>
 			<div className="w-full flex items-center">
-				<label htmlFor="LTK" className=" w-60 text-xl font-bold">
+				<label htmlFor="LTK" className=" w-52 text-xl font-bold">
 					Mã Loại Tiết Kiệm
 				</label>
 				<div className=" w-96">
@@ -63,12 +63,14 @@ function DepositForm() {
 
 			{array_form.map((state, index) => {
 				return (
-					<div key={index} className="w-full flex  items-center">
-						<label className=" w-60 text-xl font-bold">
+					<div key={index} className="w-full flex items-center">
+						<label className=" w-52 text-xl font-bold">
 							{state.label}
 						</label>
 						<div>
 							<Input
+								className="w-[300px]"
+								size="lg"
 								onChange={handleChange}
 								variant="outlined"
 								label={state.label}
@@ -81,7 +83,7 @@ function DepositForm() {
 				)
 			})}
 
-			<div className="flex flex-row-reverse gap-5">
+			<div className="flex flex-row-reverse gap-x-5">
 				<Button
 					variant="outlined"
 					color="red"

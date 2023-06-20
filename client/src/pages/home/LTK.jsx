@@ -18,7 +18,7 @@ function LTKCard() {
 		<div className=" col-span-1 border-l-2 h-[720px] my-[40px] pl-8 ">
 			<div className=" mt-5 mx-8 h-[700px] rounded-3xl flex flex-col items-center gap-4">
 				<h2 className="font-dancing pb-2 border-b-2 border-black mt-10">
-					Danh sách các loại tiết kiệm
+					Phiếu của khách hàng
 				</h2>
 
 				<form onSubmit={handleSubmit} className="">

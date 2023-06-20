@@ -19,7 +19,14 @@ const initialState = {
 const reportSlice = createSlice({
 	name: "report",
 	initialState,
-	reducers: {},
+	reducers: {
+		resetGetReport(state) {
+			console.log(state)
+			state.success.getReport = false
+			state.data.getReport = []
+			state.message.getReport = ""
+		},
+	},
 	extraReducers: (build) => {
 		build.addCase(getAllReport.fulfilled, (state, action) => {
 			state.data.getAllReport = action.payload.data
@@ -36,4 +43,5 @@ const reportSlice = createSlice({
 })
 
 const reportReducer = reportSlice.reducer
+export const { resetGetReport } = reportSlice.actions
 export default reportReducer

@@ -28,13 +28,36 @@ export async function findDepositController(req, res) {
 		})
 	}
 }
-
+// tìm phiêu theo id
+export async function findDepositIDController(req, res, next) {
+	const { id } = req.params
+	try {
+		const [data] = await mysql.query(
+			`SELECT  
+				PGT.id, KH.CMND, KH.HoTenKhachHang, LTK.TenLoaiTietKiem, PGT.TienDu
+			FROM PHIEUGUITIEN PGT
+			INNER JOIN KHACHHANG KH on PGT.MaKhachHang = KH.id
+			INNER JOIN LOAITIETKIEM LTK on LTK.id= PGT.LTK
+			WHERE PGT.id = ?
+			`,
+			[id]
+		)
+		return res.status(200).json({
+			success: true,
+			data,
+			message: "nice!",
+		})
+	} catch (error) {
+		next(error)
+	}
+}
 // tìm tất cả phiếu của một người
 export async function findDepositCustomerController(req, res, next) {
 	const { CMND } = req.params
 	try {
 		const [data] = await findDepositCustomerModel(CMND)
-		if (!data)
+		console.log(data[0])
+		if (!data[0])
 			return res.status(400).json({
 				success: false,
 				message: "Không tồn tại bất cứ phiếu nào",

@@ -43,7 +43,7 @@ function Landing() {
 			<div className=" container mx-auto px-9 h-[600px]">
 				<div className=" grid grid-cols-2 mt-40">
 					<div className="mt-14 ml-12">
-						<span className="text-7xl font-bold text-primary">
+						<span className="text-7xl font-bold font-dancing text-primary">
 							NGÂN HÀNG CUSTOMAFK
 						</span>
 						<br />

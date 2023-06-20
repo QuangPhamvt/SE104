@@ -10,6 +10,7 @@ import {
 import useForm from "../../../hooks/useForm"
 import { getReport } from "../../../store/report/reportThunk"
 import { useDispatch } from "react-redux"
+import { resetGetReport } from "../../../store/report/reportSlice"
 
 const array = ["Không Kỳ Hạn", "3 Tháng", "6 Tháng"]
 function ReportForm() {
@@ -23,6 +24,9 @@ function ReportForm() {
 			dispatch(getReport(object))
 		}
 	)
+	const handleReset = () => {
+		dispatch(resetGetReport())
+	}
 	return (
 		<Card className="mt-10 w-3/4 items-center">
 			<CardHeader className=" w-96 text-center">
@@ -30,8 +34,10 @@ function ReportForm() {
 			</CardHeader>
 			<CardBody className="w-full">
 				<form className="flex flex-col gap-y-8" onSubmit={handleSubmit}>
-					<div className="flex flex-row justify-start gap-16">
-						<label className="w-40 pt-2">Loại Kỳ Hàn</label>
+					<div className="flex flex-row justify-start gap-y-16 gap-x-8">
+						<label className="w-30 pt-2">
+							<Typography variant="h5">Loại Kỳ Hàn</Typography>
+						</label>
 						<div className="w-[600px] flex flex-row gap-x-10">
 							{array.map((state, index) => (
 								<Radio
@@ -45,11 +51,11 @@ function ReportForm() {
 							))}
 						</div>
 					</div>
-					<div className="flex flex-row justify-start gap-16">
-						<label htmlFor="" className="w-40">
-							Ngày gửi
+					<div className="flex flex-row justify-start gap-y-16 gap-x-8">
+						<label className="w-30 pt-2">
+							<Typography variant="h5">Ngày gửi</Typography>
 						</label>
-						<div className="w-72">
+						<div className="w-[400px] h-12">
 							<Input
 								label="Khách Hàng"
 								variant="outlined"
@@ -67,7 +73,10 @@ function ReportForm() {
 						<Button
 							variant="outlined"
 							color="red"
-							onClick={reset}
+							onClick={() => {
+								reset()
+								handleReset()
+							}}
 							type="reset"
 						>
 							Huy
