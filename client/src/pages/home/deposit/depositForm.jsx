@@ -22,9 +22,7 @@ const array_form = [
 	},
 ]
 function DepositForm() {
-	const [dispatch, store] = useStore(
-		(store) => store.deposit.success.postCreateDeposit
-	)
+	const [dispatch, store] = useStore((store) => store.deposit)
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
 
@@ -35,6 +33,7 @@ function DepositForm() {
 			TienGoc: 0,
 		},
 		(object) => {
+			console.table(object)
 			dispatch(postCreateDeposit(object))
 		}
 	)
@@ -48,7 +47,7 @@ function DepositForm() {
 				<label htmlFor="LTK" className=" w-60 text-xl font-bold">
 					Mã Loại Tiết Kiệm
 				</label>
-				<div className=" w-96" onChange={handleChange}>
+				<div className=" w-96">
 					{array.map((state, index) => (
 						<Radio
 							key={index}
@@ -56,6 +55,7 @@ function DepositForm() {
 							name="LTK"
 							value={state}
 							label={state}
+							onClick={handleChange}
 						/>
 					))}
 				</div>
@@ -99,11 +99,11 @@ function DepositForm() {
 					className=" duration-0 ease-linear animate-none"
 				>
 					<DialogHeader>Xác Nhận</DialogHeader>
-					{store ? (
+					{store.success.postCreateDeposit ? (
 						<DialogBody>Tạo thành công</DialogBody>
 					) : (
 						<DialogBody className=" text-red-300">
-							Không tồn tại khách hàng hoặc nhập sai số tiền
+							{store.message.postCreateDeposit}
 						</DialogBody>
 					)}
 					<DialogFooter>
@@ -111,9 +111,9 @@ function DepositForm() {
 							variant="gradient"
 							color="blue"
 							onClick={() => {
-								handleOpen()
-								reset()
 								document.getElementById("form").reset()
+								reset()
+								handleOpen()
 							}}
 						>
 							<span>OK</span>

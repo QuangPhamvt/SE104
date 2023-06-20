@@ -8,7 +8,10 @@ import {
 } from "./depositThunk"
 
 const initialState = {
-	data: [],
+	data: {
+		getAllCustomerDeposit: [],
+		postSearchDeposit: [],
+	},
 	success: {
 		getAllCustomerDeposit: false,
 		postCreateDeposit: false,
@@ -37,7 +40,7 @@ const depositSlice = createSlice({
 		// Lấy phiếu theo search
 		builder.addCase(postSearchDeposit.fulfilled, (state, action) => {
 			console.log(`deposit/postSearchDeposit: ${action.payload.message}`)
-			state.data = action.payload.data
+			state.data.postSearchDeposit = action.payload.data
 			state.message.postSearchDeposit = action.payload.message
 			state.success.postSearchDeposit = action.payload.success
 		})
@@ -46,11 +49,11 @@ const depositSlice = createSlice({
 			console.log(
 				`deposit/getAllCustomerDeposit: ${action.payload.message}`
 			)
-			state.data = action.payload.data
+			state.data.getAllCustomerDeposit = action.payload.data
 			state.message.getAllCustomerDeposit = action.payload.message
 			state.success.getAllCustomerDeposit = action.payload.success
 		})
-		// TẠo phiếu mới cho một người
+		// Tạo phiếu mới cho một người
 		builder.addCase(postCreateDeposit.fulfilled, (state, action) => {
 			console.log(`deposit/postCreateDeposit: ${action.payload.message}`)
 			state.success.postCreateDeposit = action.payload.success

@@ -4,8 +4,8 @@ import {
 	findDepositCustomerModel,
 	findDepositSearchModel,
 	findDepositModel,
-	updateDepositCustomerModel,
 	updateDrawOut,
+	updateDepositModel,
 } from "../models/phieuguitien.model.js"
 
 // lấy tất cả phiếu tồn tại
@@ -74,7 +74,7 @@ export async function createDepositController(req, res, next) {
 		if (!data)
 			return res.json({
 				success: false,
-				message: "Không tồn tại người này, vui lòng tạo lại",
+				message: "Nhập thiếu thông tin hoặc sai thông tin khách hành",
 			})
 		return res.status(200).json({
 			success: true,
@@ -87,9 +87,8 @@ export async function createDepositController(req, res, next) {
 }
 // cập nhập lại tiền cho 1 người
 export async function updateDepositController(req, res, next) {
-	const id = req.params.id
 	try {
-		await updateDepositCustomerModel(id)
+		await updateDepositModel()
 		return res.status(200).json({
 			success: true,
 			message: "đã cập nhạp thành công",

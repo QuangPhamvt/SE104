@@ -25,13 +25,14 @@ function dataCustomer(index = 10) {
 }
 async function dataDeposit(index) {
 	let data = []
-	const [customers] = await mysql.query(`select CMND from KHACHHANG`)
-	const [LTK] = await mysql.query(`select TenLoaiTietKiem from LOAITIETKIEM`)
+	const [customers] = await mysql.query(`select * from KHACHHANG`)
+	const [LTK] = await mysql.query(`select * from LOAITIETKIEM`)
 	for (let i = 0; i < index; i++) {
 		data.push({
-			CMND: customers[fakerVI.number.int({ min: 0, max: 9 })]["CMND"],
+			MaKhachHang:
+				customers[fakerVI.number.int({ min: 0, max: 9 })]["id"],
 			TienGoc: fakerVI.number.int({ min: 1, max: 100 }) * 1000000,
-			LTK: LTK[fakerVI.number.int({ min: 0, max: 2 })]["TenLoaiTietKiem"],
+			LTK: LTK[fakerVI.number.int({ min: 0, max: 2 })]["id"],
 		})
 	}
 	return data
@@ -65,10 +66,38 @@ testRouter
 	})
 	.post("/createDeposit", async (req, res, next) => {
 		try {
-			console.log(await dataDeposit(1000))
-			for (const deposit of await dataDeposit(1000)) {
-				console.log(deposit)
-				await createDeposit(deposit)
+			for (const test of await dataDeposit(10)) {
+				console.log(test)
+				const NgayMoSo = fakerVI.date.between({
+					from: "2020-01-01",
+					to: "2022-12-01",
+				})
+				const NgayDaoHan = fakerVI.date.between({
+					from: NgayMoSo.toISOString(),
+					to: "2022-12-02",
+				})
+				await mysql.query(
+					`INSERT INTO PHIEUGUITIEN(id, LTK, MaKhachHang, TienGoc, TienDu, NgayMoSo, NgayDaoHan)
+					VALUES(?, ?, ? , ?, ?, ?, ?)`,
+					[
+						nanoid(),
+						test.LTK,
+						test.MaKhachHang,
+						test.TienGoc,
+						test.TienGoc,
+						NgayMoSo,
+						NgayDaoHan,
+					]
+				)
+				// console.log([
+				// 	nanoid(),
+				// 	test.LTK,
+				// 	test.MaKhachHang,
+				// 	test.TienGoc,
+				// 	test.TienGoc,
+				// 	NgayMoSo,
+				// 	NgayDaoHan,
+				// ])
 			}
 			return res.json({
 				message: "nice",

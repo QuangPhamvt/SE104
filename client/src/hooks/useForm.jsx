@@ -10,6 +10,7 @@ function useForm(initialState = {}, onSubmit) {
 	}
 	function handleSubmit(event) {
 		event.preventDefault()
+		console.log(input)
 		let object = {}
 		for (const key in input) {
 			input[key] && (object[key] = input[key])

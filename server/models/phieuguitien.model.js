@@ -6,14 +6,12 @@ const nanoid = customAlphabet("123456789abcdef", 10)
 //tạo phiếu gửi tiền
 export async function createDeposit({ CMND, TienGoc, LTK }) {
 	const [[KH]] = await findOneCustomer(CMND)
-	console.log(KH.id)
 	const [[ltkId]] = await mysql.query(
 		`select id 
         from LOAITIETKIEM 
         where TenLoaiTietKiem = ?`,
 		[LTK]
 	)
-	console.log(ltkId.id)
 	if (!KH || !ltkId) return []
 	return mysql.query(
 		`insert into PHIEUGUITIEN(id, LTK, MaKhachHang, TienGoc, TienDu, NgayMoSo ) 
@@ -22,12 +20,11 @@ export async function createDeposit({ CMND, TienGoc, LTK }) {
 	)
 }
 // update phieu
-export async function updateDepositCustomerModel(data) {
+export async function updateDepositModel() {
 	return mysql.query(
 		`update PHIEUGUITIEN
 		SET NgayDaoHan = current_timestamp()
-		WHERE MaKhachHang = ?`,
-		[data.id]
+		`
 	)
 }
 // update xoa phieu cua nguoi dung
@@ -78,6 +75,7 @@ export async function findDepositSearchModel(data) {
 			CMND ${data?.CMND ? " = ?" : stringNull} and
 			NgayMoSo ${data?.NgayMoSo ? " = ?" : stringNull} and
 			TienDu ${data?.Check ? stringNull : " != 0"}
+		order by NgayDaoHan DESC
 		`
 	return mysql.query(query, array)
 }

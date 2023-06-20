@@ -21,7 +21,6 @@ const array = [
 	},
 ]
 function ParameterDialog({ name }) {
-	console.log(name)
 	const [open, setOpen] = useState(false)
 	const [choose, setChoose] = useState("LTK")
 	const handleChoose = (name) => setChoose(name)
@@ -36,7 +35,7 @@ function ParameterDialog({ name }) {
 				{name}
 			</Typography>
 			<Dialog open={open} handler={handleOpen}>
-				<DialogHeader>Tham Số</DialogHeader>
+				<DialogHeader>Chỉnh sửa quy định</DialogHeader>
 				<DialogBody divider>
 					<div className=" grid grid-cols-12 h-[400px]">
 						<div className=" col-span-8 border-r-2 px-28">

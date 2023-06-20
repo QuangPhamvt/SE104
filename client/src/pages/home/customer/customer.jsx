@@ -14,9 +14,7 @@ import useStore from "../../../hooks/useStore"
 
 const array = ["male", "female"]
 const CustomerCard = () => {
-	const [dispatch, store] = useStore(
-		(store) => store.customer.success.createCustomer
-	)
+	const [dispatch, store] = useStore((store) => store.customer)
 	const [open, setOpen] = useState(false)
 	const [input, handleChange, handleSubmit, reset] = useForm(
 		{
@@ -138,11 +136,11 @@ const CustomerCard = () => {
 							className=" duration-0 ease-linear  animate-none"
 						>
 							<DialogHeader>Xác Nhận</DialogHeader>
-							{store ? (
+							{store.success.createCustomer ? (
 								<DialogBody>Tạo thành công</DialogBody>
 							) : (
 								<DialogBody className="text-red-300">
-									Có lỗi xảy ra có thể nhập sai hoặc trùng tên
+									{store.message.createCustomer}
 								</DialogBody>
 							)}
 							<DialogFooter>

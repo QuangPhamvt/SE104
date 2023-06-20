@@ -24,8 +24,8 @@ export default function DialogForm({ id }) {
 				{id}
 			</Button>
 			<Dialog open={open} handler={handleOpen}>
-				<DialogHeader>BẠN MUỐN XÓA CHỨ.</DialogHeader>
-				<DialogBody divider>Bạn chắc chắn xóa nó chứ</DialogBody>
+				<DialogHeader>"Rút Tiền"</DialogHeader>
+				<DialogBody divider>Bạn chắc chắn muốn rút chứ</DialogBody>
 				<DialogFooter>
 					<Button
 						variant="text"

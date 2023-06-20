@@ -9,7 +9,7 @@ import {
 const initialState = {
 	success: {
 		verify: "",
-		postCreateUser: false,
+		postCreateUser: "not exist",
 	},
 	auth: "",
 	message: {

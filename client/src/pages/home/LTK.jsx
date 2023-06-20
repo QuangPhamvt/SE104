@@ -9,9 +9,9 @@ function LTKCard() {
 	const dispatch = useDispatch()
 	const [input, handleChange, handleSubmit] = useForm(
 		{ CMND: "0" },
-		(input) => {
-			dispatch(getAllCustomerDeposit(input.CMND))
-			dispatch(getCustomer(input.CMND))
+		(object) => {
+			dispatch(getAllCustomerDeposit(object.CMND))
+			dispatch(getCustomer(object.CMND))
 		}
 	)
 	return (

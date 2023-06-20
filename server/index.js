@@ -31,6 +31,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use("/api/v1", router)
 
 app.use(errorHandle)
+async function timeLoop() {
+	setInterval(() => {
+		console.log(5000)
+	}, 5000)
+}
 
 app.listen(PORT, "127.0.0.1", () => {
 	console.log(`Server started on port ${PORT}`)

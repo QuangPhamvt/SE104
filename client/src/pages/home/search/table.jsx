@@ -1,6 +1,7 @@
 import { Card, Typography } from "@material-tailwind/react"
 import { useSelector } from "react-redux"
 import DialogForm from "./dialogTable"
+import format from "date-fns/format"
 
 const TABLE_HEAD = [
 	"Mã Phiếu",
@@ -13,8 +14,9 @@ const TABLE_HEAD = [
 	"Ngày Đóng Sổ",
 ]
 function Table() {
-	const TABLE_ROWS = useSelector((store) => store.deposit.data)
-	console.log(TABLE_ROWS)
+	const TABLE_ROWS = useSelector(
+		(store) => store.deposit.data.postSearchDeposit
+	)
 	return (
 		<Card className="overflow-scroll h-[500px] w-full mt-2 border-2 shadow-xl ">
 			<table className="w-full min-w-max table-auto text-left relative">
@@ -55,32 +57,15 @@ function Table() {
 							const classes = isLast
 								? "p-4"
 								: "p-4 border-b border-blue-gray-50"
-							let NMS = new Date(NgayMoSo)
-							let date = NMS.getUTCDate()
-							let month =
-								NMS.getUTCMonth() < 12
-									? NMS.getUTCMonth() + 1
-									: 1
-							let year = NMS.getFullYear()
-							NMS = `${date + 1}-${month}-${year}`
-
-							let NDH = new Date(NgayDaoHan)
-							date = NDH.getUTCDate()
-							month =
-								NDH.getUTCMonth() < 12
-									? NDH.getUTCMonth() + 1
-									: 1
-							year = NDH.getFullYear()
-							NDH = `${date + 1}-${month}-${year}`
-
-							let NDS = new Date(NgayDongSo)
-							date = NDS.getUTCDate()
-							month =
-								NDS.getUTCMonth() < 12
-									? NDS.getUTCMonth() + 1
-									: 1
-							year = NDS.getFullYear()
-							NDS = `${date + 1}-${month}-${year}`
+							const NMS = format(new Date(NgayMoSo), "dd/MM/yyyy")
+							const NDH = format(
+								new Date(NgayDaoHan),
+								"dd/MM/yyyy"
+							)
+							const NDS = format(
+								new Date(NgayDongSo),
+								"dd/MM/yyyy"
+							)
 
 							return (
 								<tr key={id} className="hover:text-blue-200">

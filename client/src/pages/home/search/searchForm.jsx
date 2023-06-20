@@ -31,7 +31,6 @@ function SearchForm() {
 			Check: false,
 		},
 		(object) => {
-			console.log(object)
 			dispatch(postSearchDeposit(object))
 		}
 	)

@@ -32,10 +32,7 @@ function ReportForm() {
 				<form className="flex flex-col gap-y-8" onSubmit={handleSubmit}>
 					<div className="flex flex-row justify-start gap-16">
 						<label className="w-40 pt-2">Loại Kỳ Hàn</label>
-						<div
-							className="w-[600px] flex flex-row gap-x-10"
-							onChange={handleChange}
-						>
+						<div className="w-[600px] flex flex-row gap-x-10">
 							{array.map((state, index) => (
 								<Radio
 									key={index}
@@ -43,6 +40,7 @@ function ReportForm() {
 									name="LTK"
 									value={state}
 									label={state}
+									onClick={handleChange}
 								/>
 							))}
 						</div>

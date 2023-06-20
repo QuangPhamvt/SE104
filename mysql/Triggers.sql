@@ -62,14 +62,14 @@ BEGIN
 	) then
 		BEGIN
         DECLARE money decimal(60,5);
-        SET money = 1 + (SELECT `LaiSuat` from `LOAITIETKIEM` where `id` = '2b008dea89')*( KyHan - timestampdiff(DAY, new.`NgayDongSo`, new.`NgayDaoHan`));
+        SET money = 1 + (SELECT `LaiSuat` from `LOAITIETKIEM` where `id` = '2b008dea89')*( KyHan - timestampdiff(DAY, new.`NgayDongSo`, new.`NgayDaoHan`))/15;
 		INSERT INTO `BAOCAODOANHSO`(LTK, NGAYBAOCAO, TongThu, TongChi, ChenhLech) 
         VALUES (new.`LTK`, new.`NgayDongSo`, 0, old.`TienDu`, -1*old.`TienDu`*money);
         END;
 	ELSEIF new.`TienDu` = 0.0 then
 		BEGIN
 		DECLARE money decimal(60,5);
-        SET money = 1 + (SELECT `LaiSuat` from `LOAITIETKIEM` where `id` = '2b008dea89')*( KyHan - timestampdiff(DAY, new.`NgayDongSo`, new.`NgayDaoHan`));
+        SET money = 1 + (SELECT `LaiSuat` from `LOAITIETKIEM` where `id` = '2b008dea89')*( KyHan - timestampdiff(DAY, new.`NgayDongSo`, new.`NgayDaoHan`))/15;
 		UPDATE `BAOCAODOANHSO` 
         SET `TongChi` = `TongChi` + old.`TienDu`, `ChenhLech` = `ChenhLech` - old.`TienDu`*money
         WHERE `NgayBaoCao` = new.`NgayDongSo` AND `LTK` = new.`LTK`;

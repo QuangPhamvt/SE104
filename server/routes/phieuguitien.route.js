@@ -14,13 +14,12 @@ const phieuguitienRouter = Router()
 //middleware
 phieuguitienRouter
 	.use(verifyMiddleware)
-	.use("/update", permission)
 	// Lấy tất cả phiếu tồn tại
 	.get("/", permission, findDepositController)
+	// cập nhập lại giá trị
+	.get("/update", updateDepositController)
 	// Lấy các phiếu của 1 người
 	.get("/:CMND", findDepositCustomerController)
-	// cập nhập lại giá trị
-	.get("/update/:id", updateDepositController)
 	// TẠo 1 phiếu gửi tiền
 	.post("/create", permission, createDepositController)
 	// Lấy các phiếu theo search

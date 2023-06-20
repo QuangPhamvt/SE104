@@ -44,14 +44,8 @@ export const postSearchDeposit = createAsyncThunk(
 export const postCreateDeposit = createAsyncThunk(
 	"deposit/postCreateDeposit",
 	async function (data) {
-		const { CMND, TienGoc, LTK } = data
 		try {
-			return (
-				CMND &&
-				TienGoc &&
-				LTK &&
-				(await axiosDeposit.axiosPostCreateDeposit(data))
-			)
+			return await axiosDeposit.axiosPostCreateDeposit(data)
 		} catch (error) {
 			console.log(error.response.data)
 			return error.response.data

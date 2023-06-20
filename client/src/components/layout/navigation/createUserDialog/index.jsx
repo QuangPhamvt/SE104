@@ -1,35 +1,28 @@
 import {
-	Button,
 	Card,
 	CardBody,
 	Dialog,
-	DialogBody,
-	DialogFooter,
-	DialogHeader,
 	Input,
 	Typography,
 } from "@material-tailwind/react"
 
 import { Fragment, useState } from "react"
 import useForm from "../../../../hooks/useForm"
-import { useDispatch, useSelector } from "react-redux"
 import { postCreateUser } from "../../../../store/auth/userThunk"
+import useStore from "../../../../hooks/useStore"
+import ButtonForm from "./button"
 function CreateUserDialog({ name }) {
-	const dispatch = useDispatch()
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen((cur) => !cur)
-	const success = useSelector((store) => store.auth.success.postCreateUser)
-	const message = useSelector((store) => store.auth.message.postCreateUser)
+	const [dispatch] = useStore((store) => store.auth)
 
 	const [input, handleChange, handleSubmit] = useForm(
 		{
 			username: "",
 			password: "",
-			TenNhom: "",
 		},
 		(object) => {
-			console.log(object)
-			dispatch(postCreateUser(object))
+			dispatch(postCreateUser({ ...object, TenNhom: "Staff" }))
 		}
 	)
 
@@ -48,7 +41,7 @@ function CreateUserDialog({ name }) {
 				handler={handleOpen}
 				className="bg-transparent shadow-none"
 			>
-				<Card className="mx-auto max-w-[24rem] h-[400px] flex flex-col items-center">
+				<Card className="mx-auto max-w-[24rem] h-[340px] flex flex-col items-center">
 					<Typography variant="h3" color="blue-gray" className="mt-4">
 						Sign Up
 					</Typography>
@@ -80,31 +73,8 @@ function CreateUserDialog({ name }) {
 									value={input.password || ""}
 									onChange={handleChange}
 								/>
-								<Input
-									type="text"
-									size="lg"
-									label="Tên Nhóm"
-									name={"TenNhom"}
-									value={input.TenNhom || ""}
-									onChange={handleChange}
-								/>
 							</div>
-							<Button
-								className={`mt-6  ${
-									success ? "" : " border-red-200 border-4"
-								}`}
-								fullWidth
-								type="submit"
-							>
-								Register
-							</Button>
-							{success ? (
-								<span className="text-blue-300">
-									Tạo Thành Công
-								</span>
-							) : (
-								<span className="text-red-300">Thất bại</span>
-							)}
+							<ButtonForm />
 						</form>
 					</CardBody>
 				</Card>

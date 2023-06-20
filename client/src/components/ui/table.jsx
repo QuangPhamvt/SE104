@@ -2,7 +2,9 @@ import { Card, Typography } from "@material-tailwind/react"
 import { useSelector } from "react-redux"
 
 export default function Table(props) {
-	const data = useSelector((store) => store.deposit.data)
+	const data = useSelector(
+		(store) => store.deposit.data.getAllCustomerDeposit
+	)
 	// eslint-disable-next-line react/prop-types
 	const TABLE_HEAD = props?.["head"] || []
 	const TABLE_ROWS = data || []
