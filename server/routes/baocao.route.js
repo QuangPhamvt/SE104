@@ -9,7 +9,6 @@ import { permission } from "../middleware/permissions.js"
 const baocaoRouter = Router()
 baocaoRouter
 	.use(verifyMiddleware)
-	.use(permission)
-	.get("/", findAllReportConller)
-	.post("/", findReportController)
+	.get("/", permission, findAllReportConller)
+	.post("/:page", permission, findReportController)
 export default baocaoRouter

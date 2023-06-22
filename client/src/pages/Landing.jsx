@@ -44,7 +44,7 @@ function Landing() {
 				<div className=" grid grid-cols-2 mt-40">
 					<div className="mt-14 ml-12">
 						<span className="text-7xl font-bold font-dancing text-primary">
-							NGÂN HÀNG CUSTOMAFK
+							NGÂN HÀNG Mami Nanami
 						</span>
 						<br />
 						<br />

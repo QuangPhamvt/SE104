@@ -11,17 +11,21 @@ import useForm from "../../../hooks/useForm"
 import { getReport } from "../../../store/report/reportThunk"
 import { useDispatch } from "react-redux"
 import { resetGetReport } from "../../../store/report/reportSlice"
+import { useContext } from "react"
+import { Context } from "../../../Context"
 
 const array = ["Không Kỳ Hạn", "3 Tháng", "6 Tháng"]
 function ReportForm() {
 	const dispatch = useDispatch()
+	const [context, setContext] = useContext(Context)
 	const [input, handleChange, handleSubmit, reset] = useForm(
 		{
 			LTK: "",
 			NgayBaoCao: "",
 		},
 		(object) => {
-			dispatch(getReport(object))
+			dispatch(getReport({ ...object, page: 1 }))
+			setContext({ ...context, getReport: object })
 		}
 	)
 	const handleReset = () => {

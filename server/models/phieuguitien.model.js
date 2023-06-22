@@ -58,13 +58,11 @@ export async function findDepositModel(data) {
 //Tìm kiếm phiếu mở rộng search
 export async function findDepositSearchModel(data) {
 	const stringNull = " is not null"
-	const array = Object.values(data)
+	const { user, Check, ...dataModel } = data
+	const array = Object.values(dataModel)
 	const query = `
 		select 
-			PGT.id, 
-			LTK.TenLoaiTietKiem, LTK.LaiSuat,
-			PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
-			PGT.TienDu, PGT.TienGoc 
+			count(*) as page
 		from CNPM.PHIEUGUITIEN PGT
 		inner join CNPM.KHACHHANG KH on PGT.MaKhachHang = KH.id
 		inner join CNPM.LOAITIETKIEM LTK on LTK.id = PGT.LTK
@@ -74,8 +72,38 @@ export async function findDepositSearchModel(data) {
 			SDT ${data?.SDT ? " = ?" : stringNull} and
 			CMND ${data?.CMND ? " = ?" : stringNull} and
 			NgayMoSo ${data?.NgayMoSo ? " = ?" : stringNull} and
-			TienDu ${data?.Check ? stringNull : " != 0"}
+			TienDu ${data?.Check === "true" ? stringNull : " != 0"}
 		order by NgayDaoHan DESC
+		`
+	return mysql.query(query, array)
+}
+export async function findDepositSearchPageModel(data) {
+	const stringNull = " is not null"
+	const limit = 5
+	const { user, Check, ...dataModel } = data
+	const array = Object.values({
+		...dataModel,
+		page: (dataModel.page - 1) * limit,
+		limit: limit,
+	})
+	const query = `
+		select 
+			PGT.id, 
+			LTK.TenLoaiTietKiem, LTK.LaiSuat,
+			PGT.NgayMoSo, PGT.NgayDongSo, PGT.NgayDaoHan, 
+			PGT.TienDu, PGT.TienGoc
+		from CNPM.PHIEUGUITIEN PGT
+		inner join CNPM.KHACHHANG KH on PGT.MaKhachHang = KH.id
+		inner join CNPM.LOAITIETKIEM LTK on LTK.id = PGT.LTK
+		where 
+			TenLoaiTietKiem ${data?.LTK ? " = ?" : stringNull} and
+			HoTenKhachHang ${data?.HoTenKhachHang ? " = ? " : stringNull} and
+			SDT ${data?.SDT ? " = ?" : stringNull} and
+			CMND ${data?.CMND ? " = ?" : stringNull} and
+			NgayMoSo ${data?.NgayMoSo ? " = ?" : stringNull} and
+			TienDu ${data?.Check === "true" ? stringNull : " != 0"}
+		order by NgayDaoHan DESC, PGT.id, LTK.TenLoaiTietKiem
+		LIMIT  ?, ?
 		`
 	return mysql.query(query, array)
 }
@@ -88,7 +116,10 @@ export async function findDepositCustomerModel(CMND) {
 		FROM PHIEUGUITIEN PGT 
         inner join KHACHHANG KH on KH.id = PGT.MaKhachHang
 		inner join LOAITIETKIEM LTK on LTK.id = PGT.LTK
-        where KH.CMND = ? and PGT.TienDU != 0`,
+        where KH.CMND = ? and PGT.TienDU != 0
+		order by PGT.NgayDaoHan DESC
+		LIMIT 50
+		`,
 		[CMND]
 	)
 }

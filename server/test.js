@@ -66,8 +66,7 @@ testRouter
 	})
 	.post("/createDeposit", async (req, res, next) => {
 		try {
-			for (const test of await dataDeposit(10)) {
-				console.log(test)
+			for (const test of await dataDeposit(10000)) {
 				const NgayMoSo = fakerVI.date.between({
 					from: "2020-01-01",
 					to: "2022-12-01",

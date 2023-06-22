@@ -6,6 +6,7 @@ import {
 	findDepositModel,
 	updateDrawOut,
 	updateDepositModel,
+	findDepositSearchPageModel,
 } from "../models/phieuguitien.model.js"
 
 // lấy tất cả phiếu tồn tại
@@ -79,8 +80,17 @@ export async function findDepositCustomerController(req, res, next) {
 }
 // Tìm phiếu theo search
 export async function findDepositSearchController(req, res, next) {
+	const { page } = req.params
+	let limit = 5
 	try {
-		const [data] = await findDepositSearchModel(req.body)
+		let data
+		if (page) {
+			;[data] = await findDepositSearchPageModel({ ...req.body, page })
+		}
+		let [maxPage] = await findDepositSearchModel(req.body)
+
+		maxPage = Math.ceil(maxPage[0].page / limit)
+		data = { data: data, page: parseInt(page), maxPage }
 		return res.status(200).json({
 			success: true,
 			data,

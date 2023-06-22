@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux"
 import { postSearchDeposit } from "../../../store/deposit/depositThunk"
 import useForm from "../../../hooks/useForm"
 import { resetPostSearchDeposit } from "../../../store/deposit/depositSlice"
+import { useContext } from "react"
+import { Context } from "../../../Context"
 
 const array = ["Không Kỳ Hạn", "3 Tháng", "6 Tháng"]
 const array_form = [
@@ -22,6 +24,7 @@ const array_form = [
 ]
 function SearchForm() {
 	const dispatch = useDispatch()
+	const [context, setContext] = useContext(Context)
 	const [input, handleChange, handleSubmit, reset] = useForm(
 		{
 			LTK: "",
@@ -32,7 +35,8 @@ function SearchForm() {
 			Check: false,
 		},
 		(object) => {
-			dispatch(postSearchDeposit(object))
+			dispatch(postSearchDeposit({ ...object, page: 1 }))
+			setContext({ ...context, postSearchDeposit: object })
 		}
 	)
 	const handle = () => {

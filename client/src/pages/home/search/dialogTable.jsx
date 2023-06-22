@@ -15,7 +15,6 @@ import useStore from "../../../hooks/useStore"
 
 // eslint-disable-next-line react/prop-types
 export default function DialogForm({ id }) {
-	console.log(id)
 	const [open, setOpen] = useState(false)
 	const handleOpen = () => setOpen(!open)
 	const [dispatch, store] = useStore(
@@ -37,7 +36,7 @@ export default function DialogForm({ id }) {
 					handleOpen()
 				}}
 				variant="gradient"
-				className="h-10"
+				className="h-10 w-40"
 			>
 				{id}
 			</Button>

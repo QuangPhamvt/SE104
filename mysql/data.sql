@@ -2,9 +2,9 @@
 use CNPM;
 
 -- INSERT LTK
-INSERT INTO `LOAITIETKIEM` VALUES ('1fad48d473','6 Tháng',180,'2021-08-05',0.07000,0.055000);
-INSERT INTO `LOAITIETKIEM` VALUES ('2b008dea89','Không Kỳ Hạn',15,'2021-12-05',0.00600,0.00500);
-INSERT INTO `LOAITIETKIEM` VALUES ('7c8064f491','3 Tháng',90,'2021-05-05', 0.06, 0.05);
+INSERT INTO `LOAITIETKIEM` VALUES ('1fad48d473','6 Tháng',180,'2021-08-05',0.05500,0.055000);
+INSERT INTO `LOAITIETKIEM` VALUES ('2b008dea89','Không Kỳ Hạn',15,'2021-12-05',0.00500,0.00500);
+INSERT INTO `LOAITIETKIEM` VALUES ('7c8064f491','3 Tháng',90,'2021-05-05', 0.05, 0.05);
 
 -- INSERT KHACHHANG
 INSERT INTO `KHACHHANG` VALUES ('00c5fcf688','Hồng Lân Tăng','448324772150','Vũ Cove, Hà Tĩnh',28,'1994-12-12','0286 7061 6382','female');
@@ -39,7 +39,7 @@ INSERT INTO `CHUCNANG` VALUES (3, 'find deposit search', 'http://localhost:5000/
 INSERT INTO `CHUCNANG` VALUES (4, 'delete deposit', 'http://localhost:5000/api/v1/deposit/drawout', 'PUT');
 -- KHACHHANG
 INSERT INTO `CHUCNANG` VALUES (5, 'create customer', 'http://localhost:5000/api/v1/customer/create', 'POST');
-INSERT INTO `CHUCNANG` VALUES (6, 'find customer', 'http://localhost:5000/api/v1/customer/', 'GET'); 
+INSERT INTO `CHUCNANG` VALUES (6, 'find customer', 'http://localhost:5000/api/v1/customer', 'GET'); 
 -- BAOCAODOANHSO
 INSERT INTO `CHUCNANG` VALUES (7, 'find all report', 'http://localhost:5000/api/v1/report', 'GET');
 INSERT INTO `CHUCNANG` VALUES (8, 'find report', 'http://localhost:5000/api/v1/report', 'POST');

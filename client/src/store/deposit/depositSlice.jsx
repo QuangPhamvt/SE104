@@ -11,6 +11,7 @@ import {
 const initialState = {
 	data: {
 		getAllCustomerDeposit: [],
+		postSearchAllPage: [],
 		postSearchDeposit: [],
 		getIDDeposit: [],
 	},

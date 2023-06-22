@@ -26,7 +26,7 @@ phieuguitienRouter
 	// TẠo 1 phiếu gửi tiền
 	.post("/create", permission, createDepositController)
 	// Lấy các phiếu theo search
-	.post("/search", permission, findDepositSearchController)
+	.post("/search/:page", permission, findDepositSearchController)
 	//Rut tiền
 	.put("/drawout/:id", permission, deleteDepositController)
 

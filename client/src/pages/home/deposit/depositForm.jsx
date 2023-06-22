@@ -33,7 +33,6 @@ function DepositForm() {
 			TienGoc: 0,
 		},
 		(object) => {
-			console.table(object)
 			dispatch(postCreateDeposit(object))
 		}
 	)
